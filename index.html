@@ -569,6 +569,73 @@
             user-select: none;
         }
 
+        /* スクリーンショット抑止：画面離脱時にぼかす */
+        .quiz-screen.blurred .question-card {
+            filter: blur(20px);
+            transition: filter 0.1s;
+        }
+
+        .quiz-screen.blurred .question-text {
+            visibility: hidden;
+        }
+
+        /* スクリーンショット警告オーバーレイ */
+        .screenshot-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(26, 37, 47, 0.98);
+            z-index: 999;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .screenshot-overlay.show {
+            display: flex;
+        }
+
+        .screenshot-overlay .icon {
+            font-size: 4rem;
+            margin-bottom: 20px;
+        }
+
+        .screenshot-overlay h2 {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            color: var(--danger);
+        }
+
+        .screenshot-overlay p {
+            color: #95a5a6;
+            margin-bottom: 10px;
+        }
+
+        /* スクリーンショット禁止の注意バナー */
+        .screenshot-warning-banner {
+            background: rgba(231, 76, 60, 0.2);
+            border: 1px solid var(--danger);
+            border-radius: 8px;
+            padding: 10px 15px;
+            margin-bottom: 15px;
+            font-size: 0.8rem;
+            color: #e74c3c;
+            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .screenshot-warning-banner .icon {
+            font-size: 1.2rem;
+        }
+
         /* レスポンシブ */
         @media (max-width: 600px) {
             .header h1 {
@@ -601,6 +668,14 @@
         ⚠️ タブを離れないでください！<span class="tab-warning-count" id="tabWarningCount"></span>
     </div>
 
+    <!-- スクリーンショット検知オーバーレイ -->
+    <div class="screenshot-overlay" id="screenshotOverlay">
+        <div class="icon">📵</div>
+        <h2>画面を戻してください</h2>
+        <p>クイズ中は他のアプリに切り替えないでください</p>
+        <p style="font-size: 0.85rem;">スクリーンショット・画面録画は禁止されています</p>
+    </div>
+
     <div class="container" oncontextmenu="return false;" oncopy="return false;" oncut="return false;">
         <!-- ヘッダー -->
         <div class="header">
@@ -622,6 +697,12 @@
 
         <!-- クイズ画面 -->
         <div class="quiz-screen" id="quizScreen">
+            <!-- スクリーンショット禁止警告バナー -->
+            <div class="screenshot-warning-banner">
+                <span class="icon">📵</span>
+                スクリーンショット・画面録画・AIカンニング禁止
+            </div>
+
             <div class="progress-bar">
                 <div class="progress-fill" id="progressFill"></div>
             </div>
@@ -1083,21 +1164,72 @@
         // タブ離脱カウント
         let tabLeaveCount = 0;
 
-        // タブ離脱検知
+        // タブ離脱検知（問題をぼかす + オーバーレイ表示）
         document.addEventListener('visibilitychange', function() {
-            if (document.getElementById('quizScreen').style.display === 'block') {
+            const quizScreen = document.getElementById('quizScreen');
+            const overlay = document.getElementById('screenshotOverlay');
+
+            if (quizScreen.style.display === 'block') {
                 if (document.hidden) {
+                    // 離脱時：問題をぼかす + オーバーレイ表示
                     tabLeaveCount++;
+                    quizScreen.classList.add('blurred');
+                    overlay.classList.add('show');
+
                     const warning = document.getElementById('tabWarning');
                     const countEl = document.getElementById('tabWarningCount');
                     countEl.textContent = `離脱回数: ${tabLeaveCount}回`;
                     warning.style.display = 'block';
+                } else {
+                    // 復帰時：ぼかし解除 + オーバーレイ非表示
+                    quizScreen.classList.remove('blurred');
+                    overlay.classList.remove('show');
+
                     setTimeout(() => {
-                        warning.style.display = 'none';
+                        document.getElementById('tabWarning').style.display = 'none';
                     }, 3000);
                 }
             }
         });
+
+        // 画面録画検知（対応ブラウザのみ）
+        if (navigator.mediaDevices && navigator.mediaDevices.getDisplayMedia) {
+            // Screen Capture API の検知を試みる
+            const originalGetDisplayMedia = navigator.mediaDevices.getDisplayMedia;
+            navigator.mediaDevices.getDisplayMedia = function() {
+                console.warn('画面録画が検知されました');
+                return originalGetDisplayMedia.apply(this, arguments);
+            };
+        }
+
+        // ページ離脱時（blur）にも問題を隠す（スマホでスクショ撮る際の対策）
+        window.addEventListener('blur', function() {
+            const quizScreen = document.getElementById('quizScreen');
+            const overlay = document.getElementById('screenshotOverlay');
+
+            if (quizScreen.style.display === 'block') {
+                quizScreen.classList.add('blurred');
+                overlay.classList.add('show');
+            }
+        });
+
+        window.addEventListener('focus', function() {
+            const quizScreen = document.getElementById('quizScreen');
+            const overlay = document.getElementById('screenshotOverlay');
+
+            quizScreen.classList.remove('blurred');
+            overlay.classList.remove('show');
+        });
+
+        // タッチ長押し防止（スマホでのスクショメニュー抑止）
+        document.addEventListener('touchstart', function(e) {
+            if (document.getElementById('quizScreen').style.display === 'block') {
+                if (e.target.id !== 'userExplanation') {
+                    // 長押しを無効化
+                    e.target.style.webkitTouchCallout = 'none';
+                }
+            }
+        }, { passive: true });
 
         // コピー防止（追加対策）
         document.addEventListener('keydown', function(e) {
