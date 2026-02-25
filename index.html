@@ -477,6 +477,98 @@
             white-space: pre-wrap;
         }
 
+        /* タイマー表示 */
+        .timer-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .timer {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--success);
+            min-width: 60px;
+            text-align: center;
+        }
+
+        .timer.warning {
+            color: var(--warning);
+        }
+
+        .timer.danger {
+            color: var(--danger);
+            animation: pulse 0.5s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        .timer-bar {
+            width: 100%;
+            height: 6px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 3px;
+            overflow: hidden;
+            margin-bottom: 15px;
+        }
+
+        .timer-bar-fill {
+            height: 100%;
+            background: var(--success);
+            transition: width 0.1s linear, background 0.3s;
+            border-radius: 3px;
+        }
+
+        .timer-bar-fill.warning {
+            background: var(--warning);
+        }
+
+        .timer-bar-fill.danger {
+            background: var(--danger);
+        }
+
+        /* タブ離脱警告 */
+        .tab-warning {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: var(--danger);
+            color: white;
+            padding: 15px;
+            text-align: center;
+            z-index: 1000;
+            animation: slideDown 0.3s;
+        }
+
+        @keyframes slideDown {
+            from { transform: translateY(-100%); }
+            to { transform: translateY(0); }
+        }
+
+        .tab-warning-count {
+            background: rgba(0,0,0,0.3);
+            padding: 2px 8px;
+            border-radius: 4px;
+            margin-left: 10px;
+        }
+
+        /* コピー防止 */
+        .question-card,
+        .question-text,
+        .answer-btn {
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+
         /* レスポンシブ */
         @media (max-width: 600px) {
             .header h1 {
@@ -504,7 +596,12 @@
     </style>
 </head>
 <body>
-    <div class="container">
+    <!-- タブ離脱警告 -->
+    <div class="tab-warning" id="tabWarning">
+        ⚠️ タブを離れないでください！<span class="tab-warning-count" id="tabWarningCount"></span>
+    </div>
+
+    <div class="container" oncontextmenu="return false;" oncopy="return false;" oncut="return false;">
         <!-- ヘッダー -->
         <div class="header">
             <h1>シーシャ×経営<br>ポテンシャル可視化クイズ</h1>
@@ -532,6 +629,14 @@
             <div class="question-info">
                 <span id="questionNumber">問1 / 30</span>
                 <span class="category-badge" id="categoryBadge">カテゴリ</span>
+            </div>
+
+            <div class="timer-container">
+                <span class="timer" id="timerDisplay">20</span>
+                <span style="color: #95a5a6; font-size: 0.9rem;">秒</span>
+            </div>
+            <div class="timer-bar">
+                <div class="timer-bar-fill" id="timerBarFill"></div>
             </div>
 
             <div id="selfEvalNote" class="self-eval-note" style="display: none;">
@@ -966,6 +1071,46 @@
         let selectedAnswer = null; // 現在選択中の回答
         let userExplanations = []; // ユーザーの説明を保存
 
+        // タイマー関連
+        let timerInterval = null;
+        let timeLeft = 0;
+        let maxTime = 0;
+        let isExplanationPhase = false;
+        const TIME_SELF_EVAL = 20;  // 自己評価問題：20秒
+        const TIME_TRUE_FALSE = 15; // ○×問題：15秒
+        const TIME_EXPLANATION = 60; // 説明入力：60秒
+
+        // タブ離脱カウント
+        let tabLeaveCount = 0;
+
+        // タブ離脱検知
+        document.addEventListener('visibilitychange', function() {
+            if (document.getElementById('quizScreen').style.display === 'block') {
+                if (document.hidden) {
+                    tabLeaveCount++;
+                    const warning = document.getElementById('tabWarning');
+                    const countEl = document.getElementById('tabWarningCount');
+                    countEl.textContent = `離脱回数: ${tabLeaveCount}回`;
+                    warning.style.display = 'block';
+                    setTimeout(() => {
+                        warning.style.display = 'none';
+                    }, 3000);
+                }
+            }
+        });
+
+        // コピー防止（追加対策）
+        document.addEventListener('keydown', function(e) {
+            if (document.getElementById('quizScreen').style.display === 'block') {
+                // Ctrl+C, Ctrl+X, Ctrl+A を無効化（説明入力欄以外）
+                if ((e.ctrlKey || e.metaKey) && ['c', 'x', 'a'].includes(e.key.toLowerCase())) {
+                    if (document.activeElement.id !== 'userExplanation') {
+                        e.preventDefault();
+                    }
+                }
+            }
+        });
+
         // クイズ開始
         function startQuiz(type) {
             quizType = type;
@@ -988,8 +1133,116 @@
             document.getElementById('startScreen').style.display = 'none';
             document.getElementById('quizScreen').style.display = 'block';
             document.getElementById('resultScreen').style.display = 'none';
+            tabLeaveCount = 0;
 
             showQuestion();
+        }
+
+        // タイマー開始
+        function startTimer(seconds) {
+            stopTimer();
+            timeLeft = seconds;
+            maxTime = seconds;
+            isExplanationPhase = false;
+            updateTimerDisplay();
+
+            timerInterval = setInterval(() => {
+                timeLeft--;
+                updateTimerDisplay();
+
+                if (timeLeft <= 0) {
+                    stopTimer();
+                    handleTimeUp();
+                }
+            }, 1000);
+        }
+
+        // 説明入力用タイマー開始
+        function startExplanationTimer() {
+            stopTimer();
+            timeLeft = TIME_EXPLANATION;
+            maxTime = TIME_EXPLANATION;
+            isExplanationPhase = true;
+            updateTimerDisplay();
+
+            timerInterval = setInterval(() => {
+                timeLeft--;
+                updateTimerDisplay();
+
+                if (timeLeft <= 0) {
+                    stopTimer();
+                    // 時間切れでも入力された分は保存して次へ
+                    submitExplanation(true);
+                }
+            }, 1000);
+        }
+
+        // タイマー停止
+        function stopTimer() {
+            if (timerInterval) {
+                clearInterval(timerInterval);
+                timerInterval = null;
+            }
+        }
+
+        // タイマー表示更新
+        function updateTimerDisplay() {
+            const timerEl = document.getElementById('timerDisplay');
+            const timerBarFill = document.getElementById('timerBarFill');
+            const percent = (timeLeft / maxTime) * 100;
+
+            timerEl.textContent = timeLeft;
+            timerBarFill.style.width = percent + '%';
+
+            // 色の変更
+            timerEl.className = 'timer';
+            timerBarFill.className = 'timer-bar-fill';
+
+            if (timeLeft <= 5) {
+                timerEl.classList.add('danger');
+                timerBarFill.classList.add('danger');
+            } else if (timeLeft <= 10) {
+                timerEl.classList.add('warning');
+                timerBarFill.classList.add('warning');
+            }
+        }
+
+        // 時間切れ処理
+        function handleTimeUp() {
+            const q = currentQuestions[currentIndex];
+            const btnCorrect = document.getElementById('btnCorrect');
+            const btnWrong = document.getElementById('btnWrong');
+            const feedback = document.getElementById('feedback');
+
+            // ボタンを無効化
+            btnCorrect.disabled = true;
+            btnWrong.disabled = true;
+
+            // 未回答として処理（不正解扱い）
+            // シーシャ/経営別スコア
+            if (q.quizType === 'shisha') {
+                shishaScore.total++;
+            } else {
+                businessScore.total++;
+            }
+
+            // カテゴリ別スコア
+            if (!categoryScores[q.category]) {
+                categoryScores[q.category] = { correct: 0, total: 0 };
+            }
+            categoryScores[q.category].total++;
+
+            // フィードバック表示
+            feedback.style.display = 'block';
+            feedback.className = 'feedback wrong';
+            document.getElementById('feedbackTitle').textContent = '⏱️ 時間切れ！';
+            document.getElementById('feedbackText').textContent = q.explanation;
+
+            // 確定ボタン非表示、次へボタン表示
+            document.getElementById('confirmBtn').style.display = 'none';
+            document.getElementById('nextBtn').style.display = 'block';
+            document.getElementById('nextBtn').textContent =
+                currentIndex === currentQuestions.length - 1 ? '結果を見る' : '次の問題へ';
         }
 
         // 配列シャッフル
@@ -1050,6 +1303,10 @@
             document.getElementById('explanationInput').style.display = 'none';
             document.getElementById('userExplanationDisplay').style.display = 'none';
             document.getElementById('userExplanation').value = '';
+
+            // タイマー開始
+            const timerSeconds = q.type === 'self-eval' ? TIME_SELF_EVAL : TIME_TRUE_FALSE;
+            startTimer(timerSeconds);
         }
 
         // 回答選択（変更可能）
@@ -1096,6 +1353,9 @@
                 alert('回答を選択してください');
                 return;
             }
+
+            // タイマー停止
+            stopTimer();
 
             const q = currentQuestions[currentIndex];
             const btnCorrect = document.getElementById('btnCorrect');
@@ -1144,13 +1404,16 @@
                 // フィードバックは「○ できる」のみ表示、解説はまだ非表示
                 feedback.className = 'feedback correct';
                 document.getElementById('feedbackTitle').textContent = '○ できる';
-                document.getElementById('feedbackText').textContent = '下のテキストエリアに説明を入力してください';
+                document.getElementById('feedbackText').textContent = '下のテキストエリアに説明を入力してください（60秒以内）';
 
                 document.getElementById('explanationInput').style.display = 'block';
                 document.getElementById('explanationLabel').textContent =
                     '実際に自分の言葉で説明してください：';
                 document.getElementById('submitExplanationBtn').style.display = 'block';
                 document.getElementById('nextBtn').style.display = 'none';
+
+                // 説明入力用タイマー開始
+                startExplanationTimer();
             } else {
                 // 通常通り解説を表示
                 if (q.type === 'self-eval') {
@@ -1172,18 +1435,21 @@
         }
 
         // 説明を送信
-        function submitExplanation() {
+        function submitExplanation(isTimeUp = false) {
             const userExplanation = document.getElementById('userExplanation').value.trim();
 
-            if (!userExplanation) {
+            if (!userExplanation && !isTimeUp) {
                 alert('説明を入力してください');
                 return;
             }
 
+            // タイマー停止
+            stopTimer();
+
             const q = currentQuestions[currentIndex];
 
             // ユーザーの説明を保存
-            userExplanations[currentIndex] = userExplanation;
+            userExplanations[currentIndex] = userExplanation || '（未入力）';
 
             // 入力フォームを非表示
             document.getElementById('explanationInput').style.display = 'none';
@@ -1191,12 +1457,20 @@
 
             // ユーザーの説明を表示
             document.getElementById('userExplanationDisplay').style.display = 'block';
-            document.getElementById('userExplanationText').textContent = userExplanation;
+            if (userExplanation) {
+                document.getElementById('userExplanationText').textContent = userExplanation;
+            } else {
+                document.getElementById('userExplanationText').textContent = '（時間切れ：未入力）';
+            }
 
             // 解説を表示（ここで初めて見せる）
             const feedback = document.getElementById('feedback');
             feedback.className = 'feedback correct';
-            document.getElementById('feedbackTitle').textContent = '回答例：';
+            if (isTimeUp && !userExplanation) {
+                document.getElementById('feedbackTitle').textContent = '⏱️ 時間切れ！ 回答例：';
+            } else {
+                document.getElementById('feedbackTitle').textContent = '回答例：';
+            }
             document.getElementById('feedbackText').textContent = q.explanation;
 
             // 次へボタン表示
@@ -1207,6 +1481,9 @@
 
         // 次の問題へ進む
         function nextQuestion() {
+            // タイマー停止
+            stopTimer();
+
             // 選択をリセット
             selectedAnswer = null;
 
@@ -1230,6 +1507,7 @@
 
         // 結果表示
         function showResult() {
+            stopTimer();
             document.getElementById('quizScreen').style.display = 'none';
             document.getElementById('resultScreen').style.display = 'block';
 
@@ -1321,6 +1599,9 @@
 
         // 再スタート
         function restart() {
+            stopTimer();
+            tabLeaveCount = 0;
+            document.getElementById('tabWarning').style.display = 'none';
             document.getElementById('startScreen').style.display = 'block';
             document.getElementById('quizScreen').style.display = 'none';
             document.getElementById('resultScreen').style.display = 'none';
