@@ -1,6 +1,6 @@
 // Google Sheets連携用エンドポイント（GASデプロイURL）
 // 設定方法: gas/sheets-receiver.gs をデプロイ後、URLをここに貼り付ける
-const GAS_ENDPOINT = '';
+const GAS_ENDPOINT = 'https://script.google.com/macros/s/AKfycbyqBq7eYVt18QJiwJITaefPZY4WZ5JqVo-C6enqDAx3R9T2xAfGOkRQ8aIhqJ1kQtsAng/exec';
 
 // シーシャ技術診断（30問）
 const shishaQuestions = [
