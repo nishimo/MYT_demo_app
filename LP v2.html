@@ -1,0 +1,1351 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>MYTコーチング — シーシャの品質も、利益も、あきらめない店へ。</title>
+<meta name="description" content="シーシャ店向け「技術×経営」統合診断。55問の診断で店舗のボトルネックを特定し、約30日で動けるToDoに変える。月5件限定、¥55,000（税込）。" />
+
+<!-- OGP / Twitter Card -->
+<!-- TODO: 本番公開URLが確定したら og:url / twitter:url / canonical を差し替え -->
+<!-- TODO: OGP画像（1200×630px推奨）を assets/ogp.png 等で用意 -->
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="MYTコーチング" />
+<meta property="og:title" content="MYTコーチング — シーシャの品質も、利益も、あきらめない店へ。" />
+<meta property="og:description" content="シーシャ店向け「技術×経営」統合診断。55問の診断で店舗のボトルネックを特定し、約30日で動けるToDoに変える。月5件限定、¥55,000（税込）。" />
+<meta property="og:url" content="https://example.com/" />
+<meta property="og:image" content="https://example.com/assets/ogp.png" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="MYTコーチング — シーシャの品質も、利益も、あきらめない店へ。" />
+<meta name="twitter:description" content="シーシャ店向け「技術×経営」統合診断。55問の診断で店舗のボトルネックを特定し、約30日で動けるToDoに変える。" />
+<meta name="twitter:image" content="https://example.com/assets/ogp.png" />
+<link rel="canonical" href="https://example.com/" />
+<!-- TODO: favicon ファイルを用意して差し替え -->
+<link rel="icon" href="assets/favicon.ico" />
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@400;500;600;700;800&family=Zen+Kaku+Gothic+New:wght@300;400;500;700&family=JetBrains+Mono:wght@400;500&family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #FFFFFF;
+    --paper-2: #F4F4F2;
+    --ink: #1A1612;        /* 墨 */
+    --ink-soft: #3A342C;
+    --ink-mute: #7A7164;
+    --rule: #D9D6CF;
+    --accent: #A63333;     /* 朱 */
+    --accent-deep: #7A2828;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: "Zen Kaku Gothic New", "Noto Sans JP", sans-serif;
+    font-weight: 400;
+    line-height: 1.9;
+    -webkit-font-smoothing: antialiased;
+    font-feature-settings: "palt";
+    word-break: auto-phrase;
+    line-break: strict;
+    overflow-wrap: break-word;
+  }
+  .mincho { font-family: "Shippori Mincho", serif; font-feature-settings: "palt"; }
+  .mono  { font-family: "JetBrains Mono", monospace; }
+  .italic-en { font-family: "Cormorant Garamond", serif; font-style: italic; letter-spacing: 0.02em; }
+  .vertical { writing-mode: vertical-rl; -webkit-writing-mode: vertical-rl; }
+
+  .eyebrow {
+    font-family: "JetBrains Mono", monospace;
+    font-size: 10px;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--ink-mute);
+  }
+  a { color: inherit; }
+  button { font-family: inherit; cursor: pointer; }
+  ::selection { background: var(--accent); color: var(--paper); }
+
+  /* Container */
+  .wrap { max-width: 1280px; margin: 0 auto; padding: 0 48px; }
+  @media (max-width: 680px) { .wrap { padding: 0 20px; } }
+
+  /* Hanko (朱印) */
+  .hanko {
+    display: inline-block;
+    width: 42px; height: 42px;
+    border: 2px solid var(--accent);
+    color: var(--accent);
+    font-family: "Shippori Mincho", serif;
+    font-weight: 700;
+    font-size: 18px;
+    line-height: 38px;
+    text-align: center;
+    transform: rotate(-3deg);
+  }
+
+  /* Masthead — magazine style */
+  .masthead {
+    border-bottom: 3px double var(--ink);
+    padding: 20px 0 16px;
+  }
+  .masthead-inner {
+    display: flex; align-items: flex-end; justify-content: space-between;
+    max-width: 1280px; margin: 0 auto; padding: 0 48px;
+    gap: 24px;
+  }
+  @media (max-width: 680px) { .masthead-inner { padding: 0 20px; } }
+  .mast-left { display: flex; align-items: baseline; gap: 20px; }
+  .issue {
+    font-family: "JetBrains Mono", monospace;
+    font-size: 10px; letter-spacing: 0.2em; color: var(--ink-mute);
+  }
+  .mast-logo {
+    font-family: "Shippori Mincho", serif;
+    font-weight: 800; font-size: 32px;
+    letter-spacing: 0.02em;
+    line-height: 1;
+  }
+  .mast-logo .sub { font-size: 13px; font-weight: 400; color: var(--ink-mute); margin-left: 12px; letter-spacing: 0.1em; }
+  .mast-right { display: flex; gap: 24px; align-items: baseline; font-family: "Shippori Mincho", serif; font-size: 13px; }
+  .mast-right a { text-decoration: none; }
+  .mast-right a:hover { color: var(--accent); }
+  .mast-cta {
+    padding: 10px 20px;
+    background: var(--ink); color: var(--paper);
+    font-family: "Shippori Mincho", serif; font-size: 13px;
+    text-decoration: none;
+  }
+  @media (max-width: 860px) { .mast-right a:not(.mast-cta) { display: none; } }
+
+  /* HERO — vertical composition */
+  .hero {
+    padding: 56px 0 80px;
+    position: relative;
+    border-bottom: 1px solid var(--ink);
+  }
+  .hero-grid {
+    display: grid;
+    grid-template-columns: 80px 1fr 360px;
+    gap: 48px;
+    align-items: stretch;
+    min-height: 640px;
+  }
+  @media (max-width: 1000px) { .hero-grid { grid-template-columns: 1fr; } }
+  .hero-spine {
+    border-right: 1px solid var(--ink);
+    display: flex; flex-direction: column; justify-content: space-between;
+    padding-right: 24px;
+  }
+  @media (max-width: 1000px) { .hero-spine { border-right: none; border-bottom: 1px solid var(--ink); padding-right: 0; padding-bottom: 20px; flex-direction: row; } }
+  .hero-spine .chapter {
+    writing-mode: vertical-rl; -webkit-writing-mode: vertical-rl;
+    font-family: "Shippori Mincho", serif;
+    font-size: 14px; letter-spacing: 0.8em;
+    color: var(--ink);
+  }
+  @media (max-width: 1000px) { .hero-spine .chapter { writing-mode: horizontal-tb; letter-spacing: 0.4em; } }
+  .hero-spine .folio {
+    font-family: "JetBrains Mono", monospace; font-size: 11px;
+    color: var(--ink-mute); letter-spacing: 0.15em;
+    writing-mode: vertical-rl;
+  }
+  @media (max-width: 1000px) { .hero-spine .folio { writing-mode: horizontal-tb; } }
+
+  .hero-main {
+    position: relative;
+    display: flex; flex-direction: column; justify-content: space-between;
+  }
+  .hero-kicker {
+    font-family: "Shippori Mincho", serif;
+    font-size: 14px; color: var(--accent);
+    letter-spacing: 0.3em; font-weight: 500;
+    margin-bottom: 40px;
+    display: flex; align-items: center; gap: 16px;
+  }
+  .hero-kicker .rule { flex: none; width: 48px; height: 1px; background: var(--accent); }
+
+  .hero-title {
+    font-family: "Shippori Mincho", serif;
+    font-weight: 600;
+    font-size: clamp(40px, 5vw, 68px);
+    line-height: 1.3;
+    letter-spacing: 0.01em;
+    margin-bottom: 40px;
+    position: relative;
+    word-break: keep-all;
+    overflow-wrap: normal;
+  }
+  .hero-title .strong-word {
+    color: var(--accent);
+    position: relative;
+  }
+  .hero-title .strong-word::after {
+    content: "";
+    position: absolute;
+    left: 0; right: 0; bottom: -4px;
+    height: 3px;
+    background: var(--accent);
+    opacity: 0.5;
+  }
+  .hero-title .small {
+    display: block; font-size: 0.28em;
+    color: var(--ink-soft);
+    font-weight: 400; letter-spacing: 0.1em;
+    margin-top: 20px;
+    font-family: "Shippori Mincho", serif;
+  }
+
+  .hero-lede {
+    font-family: "Shippori Mincho", serif;
+    font-size: 17px; line-height: 2.2;
+    color: var(--ink-soft);
+    max-width: 30em;
+    margin-bottom: 48px;
+  }
+  .hero-lede .lead {
+    font-size: 20px; font-weight: 500; color: var(--ink);
+    display: block; margin-bottom: 14px;
+  }
+  .hero-ctas { display: flex; gap: 20px; flex-wrap: wrap; align-items: center; }
+  .btn-primary {
+    background: var(--ink); color: var(--paper);
+    border: none; padding: 20px 36px;
+    font-family: "Shippori Mincho", serif;
+    font-size: 15px; letter-spacing: 0.1em; font-weight: 500;
+    display: inline-flex; align-items: center; gap: 14px;
+    text-decoration: none;
+    transition: background 0.2s, transform 0.2s;
+    border: 1px solid var(--ink);
+  }
+  .btn-primary:hover { background: var(--accent); border-color: var(--accent); transform: translateY(-1px); }
+  .btn-primary .arrow { font-family: "Cormorant Garamond", serif; font-size: 22px; font-style: italic; }
+  .btn-ghost {
+    background: none; color: var(--ink);
+    border: none;
+    border-bottom: 1px solid var(--ink);
+    padding: 8px 4px;
+    font-family: "Shippori Mincho", serif;
+    font-size: 14px; letter-spacing: 0.06em;
+    text-decoration: none;
+  }
+  .btn-ghost:hover { color: var(--accent); border-color: var(--accent); }
+
+  /* Hero side panel — magazine "table of contents" feel */
+  .hero-side {
+    border: 1px solid var(--ink);
+    padding: 28px 28px 32px;
+    position: relative;
+    background: var(--paper);
+    align-self: start;
+  }
+  .hero-side::before {
+    content: "";
+    position: absolute; top: 12px; left: 12px; right: -12px; bottom: -12px;
+    border: 1px solid var(--ink);
+    z-index: -1;
+  }
+  .hero-side .side-title {
+    font-family: "Shippori Mincho", serif;
+    font-size: 14px; font-weight: 600;
+    padding-bottom: 10px; border-bottom: 2px solid var(--ink);
+    margin-bottom: 16px;
+    display: flex; justify-content: space-between; align-items: baseline;
+  }
+  .hero-side .side-title .num { font-family: "Cormorant Garamond", serif; font-style: italic; color: var(--accent); }
+  .hero-side dl { display: grid; grid-template-columns: auto 1fr; gap: 14px 18px; font-family: "Shippori Mincho", serif; }
+  .hero-side dt { font-size: 11px; color: var(--ink-mute); padding-top: 4px; font-family: "JetBrains Mono", monospace; letter-spacing: 0.1em; }
+  .hero-side dd { font-size: 15px; font-weight: 500; line-height: 1.5; }
+  .hero-side dd em { font-family: "Cormorant Garamond", serif; font-style: italic; color: var(--accent); font-size: 26px; margin-right: 4px; line-height: 1; }
+  .hero-side .hanko { position: absolute; bottom: -24px; right: 24px; background: var(--paper); }
+
+  /* Section base — magazine chapter layout */
+  section { padding: 84px 0; position: relative; }
+  @media (max-width: 680px) { section { padding: 56px 0; } }
+  .chap { border-top: 1px solid var(--ink); }
+  .chap-head {
+    display: grid; grid-template-columns: 80px 1fr auto;
+    gap: 48px; align-items: baseline;
+    padding-top: 24px;
+    margin-bottom: 44px;
+    border-bottom: 1px solid var(--rule);
+    padding-bottom: 22px;
+  }
+  @media (max-width: 680px) { .chap-head { grid-template-columns: 1fr; gap: 8px; padding-top: 16px; margin-bottom: 28px; } }
+  .chap-num {
+    font-family: "Shippori Mincho", serif; font-weight: 600;
+    font-size: 48px; line-height: 0.9; color: var(--accent);
+    white-space: nowrap;
+  }
+  .chap-num .th { font-family: "Cormorant Garamond", serif; font-style: italic; font-size: 16px; color: var(--ink-mute); letter-spacing: 0.1em; margin-left: 6px; }
+
+  /* 小ラベル・数値・見出しタグは意図しない改行を防ぐ */
+  .issue,
+  .mast-logo,
+  .mast-cta,
+  .eyebrow,
+  .chap-en,
+  .hero-kicker,
+  .tag,
+  .svc-sub,
+  .limit-note,
+  .price-tag .price,
+  .svc-price,
+  .hero-side dt,
+  .hero-side dd em,
+  .step-num,
+  .step-kanji,
+  .logic-col .ttl,
+  .mock-head span,
+  .bar-row .lbl,
+  .bar-row .val,
+  .priority-map .axis,
+  .priority-map .pt .tip,
+  .q-num,
+  .m-tag,
+  .m-en,
+  .team-note .k,
+  .foot-links a,
+  .copy span {
+    white-space: nowrap;
+  }
+  .chap-title {
+    font-family: "Shippori Mincho", serif;
+    font-size: clamp(28px, 4vw, 44px);
+    font-weight: 600; line-height: 1.4;
+    text-wrap: balance;
+  }
+  .chap-en {
+    font-family: "Cormorant Garamond", serif; font-style: italic;
+    font-size: 18px; color: var(--ink-mute);
+    text-align: right;
+  }
+
+  /* PROBLEM */
+  .problem {
+    background: var(--ink); color: var(--paper);
+  }
+  .problem .chap { border-top: none; }
+  .problem .chap-title { color: var(--paper); }
+  .problem .chap-num { color: var(--accent); }
+  .problem .chap-en { color: color-mix(in oklab, var(--paper) 60%, transparent); }
+  .problem-grid {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 80px; align-items: center;
+  }
+  @media (max-width: 860px) { .problem-grid { grid-template-columns: 1fr; gap: 48px; } }
+  .problem-lead {
+    font-family: "Shippori Mincho", serif;
+    font-size: clamp(26px, 3.4vw, 38px);
+    font-weight: 400; line-height: 1.8;
+    word-break: auto-phrase;
+    line-break: strict;
+  }
+  .problem-lead .big { word-break: keep-all; overflow-wrap: normal; }
+  .problem-lead .redmark { color: var(--accent); font-weight: 600; }
+  .problem-lead .big {
+    display: block;
+    font-size: 1.6em; font-weight: 600;
+    margin: 24px 0;
+    padding: 0 0 0 32px;
+    border-left: 4px solid var(--accent);
+  }
+  .contrast-box {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 2px; background: var(--rule);
+    border: 1px solid var(--rule);
+  }
+  .contrast-box > div {
+    background: var(--ink); padding: 32px 28px;
+    position: relative;
+  }
+  .contrast-box > div:first-child::after {
+    content: "×"; position: absolute; right: -14px; top: 50%;
+    transform: translateY(-50%);
+    font-family: "Shippori Mincho", serif; font-size: 24px;
+    color: var(--accent);
+    background: var(--ink); width: 28px; height: 28px;
+    display: flex; align-items: center; justify-content: center;
+    border-radius: 50%;
+    z-index: 2;
+  }
+  .contrast-box .tag {
+    font-family: "JetBrains Mono", monospace;
+    font-size: 10px; letter-spacing: 0.2em;
+    color: var(--accent); margin-bottom: 12px;
+  }
+  .contrast-box .big-jp {
+    font-family: "Shippori Mincho", serif;
+    font-size: 32px; font-weight: 600;
+    line-height: 1.3; margin-bottom: 16px;
+  }
+  .contrast-box .text {
+    font-family: "Shippori Mincho", serif;
+    font-size: 14px; line-height: 2;
+    color: color-mix(in oklab, var(--paper) 80%, transparent);
+  }
+
+  /* SERVICES — editorial columns */
+  .services-spread {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 48px;
+  }
+  @media (max-width: 860px) { .services-spread { grid-template-columns: 1fr; } }
+  .svc-card {
+    padding: 48px 0 0;
+    border-top: 3px double var(--ink);
+    position: relative;
+  }
+  .svc-card .svc-kanji {
+    font-family: "Shippori Mincho", serif;
+    font-size: 13px; letter-spacing: 0.4em;
+    color: var(--accent); margin-bottom: 16px;
+    writing-mode: vertical-rl;
+    position: absolute; top: 24px; right: 0;
+    height: 140px;
+  }
+  .svc-card h3 {
+    font-family: "Shippori Mincho", serif;
+    font-size: 32px; font-weight: 600;
+    line-height: 1.4; margin-bottom: 4px; padding-right: 48px;
+  }
+  .svc-card .svc-sub { font-family: "Cormorant Garamond", serif; font-style: italic; color: var(--ink-mute); font-size: 18px; margin-bottom: 28px; }
+  .svc-card .svc-desc { font-family: "Shippori Mincho", serif; font-size: 15px; line-height: 2; color: var(--ink-soft); margin-bottom: 32px; padding-right: 60px; }
+  .svc-card dl {
+    display: grid; grid-template-columns: 100px 1fr;
+    gap: 14px 20px; padding: 24px 0;
+    border-top: 1px solid var(--rule); border-bottom: 1px solid var(--rule);
+    font-family: "Shippori Mincho", serif;
+    font-size: 14px;
+    margin-bottom: 28px;
+  }
+  .svc-card dt { color: var(--ink-mute); font-family: "JetBrains Mono", monospace; font-size: 10px; letter-spacing: 0.12em; padding-top: 2px; }
+  .svc-card dd { color: var(--ink); font-size: 14px; }
+  .svc-card .price-tag {
+    display: flex; align-items: baseline; gap: 14px; margin-bottom: 12px;
+    padding: 16px 0; border-bottom: 1px solid var(--ink);
+  }
+  .svc-card .price-tag .price {
+    font-family: "Shippori Mincho", serif;
+    font-size: 36px; font-weight: 600; line-height: 1;
+  }
+  .svc-card .price-tag .price .yen { font-size: 22px; margin-right: 2px; }
+  .svc-card .price-tag .unit { font-size: 12px; color: var(--ink-mute); font-family: "Shippori Mincho", serif; }
+  .svc-card .limit-note {
+    display: inline-flex; align-items: center; gap: 10px;
+    font-family: "Shippori Mincho", serif; font-size: 13px;
+    color: var(--accent); margin-bottom: 28px;
+  }
+  .svc-card .limit-note .dot { width: 8px; height: 8px; background: var(--accent); border-radius: 50%; animation: pulse 2s infinite; }
+  @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
+  .svc-card .cta {
+    display: inline-flex; align-items: center; gap: 14px;
+    padding: 18px 28px;
+    background: var(--ink); color: var(--paper);
+    text-decoration: none;
+    font-family: "Shippori Mincho", serif; font-size: 14px; letter-spacing: 0.08em;
+  }
+  .svc-card .cta:hover { background: var(--accent); }
+  .svc-card.featured::before {
+    content: "推"; position: absolute; top: -20px; left: 0;
+    background: var(--accent); color: var(--paper);
+    width: 40px; height: 40px;
+    font-family: "Shippori Mincho", serif; font-weight: 700;
+    font-size: 20px;
+    display: flex; align-items: center; justify-content: center;
+  }
+
+  /* FLOW */
+  .flow-bg { background: var(--paper-2); }
+  .flow-steps {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 0;
+    position: relative;
+  }
+  @media (max-width: 860px) { .flow-steps { grid-template-columns: 1fr; } }
+  .flow-step {
+    padding: 24px 20px 24px 0;
+    position: relative;
+    border-right: 1px solid var(--rule);
+  }
+  .flow-step:last-child { border-right: none; }
+  @media (max-width: 860px) { .flow-step { border-right: none; border-bottom: 1px solid var(--rule); padding: 20px 0; } .flow-step:last-child { border-bottom: none; } }
+  .flow-step .step-num {
+    font-family: "Cormorant Garamond", serif; font-style: italic;
+    font-size: 40px; color: var(--accent); line-height: 1;
+    margin-bottom: 8px;
+  }
+  .flow-step .step-kanji {
+    font-family: "Shippori Mincho", serif;
+    font-size: 22px; font-weight: 600;
+    margin-bottom: 8px;
+  }
+  .flow-step .step-desc { font-family: "Shippori Mincho", serif; font-size: 13px; line-height: 1.8; color: var(--ink-soft); }
+
+  .logic-spread {
+    margin-top: 80px;
+    display: grid; grid-template-columns: 200px 1fr;
+    gap: 48px;
+    border: 1px solid var(--ink);
+    padding: 40px;
+    background: var(--paper);
+  }
+  @media (max-width: 860px) { .logic-spread { grid-template-columns: 1fr; padding: 24px; gap: 24px; } }
+  .logic-side {
+    border-right: 1px solid var(--rule);
+    padding-right: 32px;
+  }
+  @media (max-width: 860px) { .logic-side { border-right: none; border-bottom: 1px solid var(--rule); padding-right: 0; padding-bottom: 24px; } }
+  .logic-side .tatetitle {
+    font-family: "Shippori Mincho", serif;
+    font-size: 32px; font-weight: 600;
+    writing-mode: vertical-rl; -webkit-writing-mode: vertical-rl;
+    letter-spacing: 0.3em;
+    margin-bottom: 16px;
+  }
+  @media (max-width: 860px) { .logic-side .tatetitle { writing-mode: horizontal-tb; letter-spacing: 0.1em; } }
+  .logic-side .fig {
+    font-family: "Cormorant Garamond", serif; font-style: italic;
+    color: var(--accent); font-size: 16px;
+  }
+  .logic-cols {
+    display: grid; grid-template-columns: 1fr auto 1fr auto 1fr;
+    gap: 16px; align-items: stretch;
+  }
+  @media (max-width: 680px) {
+    .logic-cols { grid-template-columns: 1fr; }
+    .logic-cols .arrow { transform: rotate(90deg); justify-self: center; }
+  }
+  .logic-col {
+    border: 1px solid var(--rule);
+    padding: 20px 18px;
+    background: var(--paper-2);
+  }
+  .logic-col .ttl { font-family: "Cormorant Garamond", serif; font-style: italic; color: var(--accent); font-size: 15px; }
+  .logic-col .jp { font-family: "Shippori Mincho", serif; font-size: 17px; font-weight: 600; margin-bottom: 14px; }
+  .logic-col ul { list-style: none; font-family: "Shippori Mincho", serif; font-size: 13px; line-height: 1.9; color: var(--ink-soft); }
+  .logic-col li { padding-left: 14px; position: relative; }
+  .logic-col li::before { content: "—"; position: absolute; left: 0; color: var(--ink-mute); }
+  .logic-col .count { font-family: "JetBrains Mono", monospace; font-size: 10px; color: var(--ink-mute); margin-top: 12px; padding-top: 10px; border-top: 1px dashed var(--rule); }
+  .arrow { display: flex; align-items: center; justify-content: center; font-family: "Shippori Mincho", serif; font-size: 28px; color: var(--accent); font-weight: 600; }
+
+  /* REPORT */
+  .report-grid {
+    display: grid; grid-template-columns: 1.1fr 1fr;
+    gap: 80px; align-items: center;
+  }
+  @media (max-width: 860px) { .report-grid { grid-template-columns: 1fr; gap: 48px; } }
+  .report-mock {
+    background: var(--paper-2);
+    padding: 44px 40px;
+    border: 1px solid var(--ink);
+    position: relative;
+    box-shadow: 12px 12px 0 0 var(--ink);
+  }
+  .report-mock .mock-head { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 24px; padding-bottom: 14px; border-bottom: 2px solid var(--ink); }
+  .report-mock .mock-head h5 { font-family: "Shippori Mincho", serif; font-size: 16px; font-weight: 600; }
+  .report-mock .mock-head span { font-family: "JetBrains Mono", monospace; font-size: 10px; color: var(--ink-mute); }
+  .report-mock h6 { font-family: "Shippori Mincho", serif; font-size: 18px; font-weight: 600; margin-bottom: 14px; display: flex; align-items: center; gap: 10px; }
+  .report-mock h6::before { content: "■"; color: var(--accent); font-size: 12px; }
+  .bar-row { display: grid; grid-template-columns: 110px 1fr 44px; align-items: center; gap: 12px; margin-bottom: 9px; }
+  .bar-row .lbl { font-family: "Shippori Mincho", serif; font-size: 13px; }
+  .bar-row .bar { height: 10px; background: var(--rule); position: relative; }
+  .bar-row .bar > span { position: absolute; top: 0; left: 0; bottom: 0; background: var(--accent); }
+  .bar-row .val { font-family: "JetBrains Mono", monospace; font-size: 11px; text-align: right; }
+  .priority-map { margin-top: 28px; position: relative; aspect-ratio: 1; border: 1px solid var(--rule); background: var(--paper); }
+  .priority-map .axis { position: absolute; font-family: "JetBrains Mono", monospace; font-size: 9px; color: var(--ink-mute); letter-spacing: 0.1em; }
+  .priority-map .axis.x-min { bottom: -18px; left: 0; }
+  .priority-map .axis.x-max { bottom: -18px; right: 0; }
+  .priority-map .axis.y-min { top: 0; right: -56px; writing-mode: vertical-rl; }
+  .priority-map .axis.y-max { bottom: 0; right: -56px; writing-mode: vertical-rl; }
+  .priority-map::before, .priority-map::after { content: ""; position: absolute; background: var(--rule); }
+  .priority-map::before { left: 50%; top: 0; bottom: 0; width: 1px; }
+  .priority-map::after { top: 50%; left: 0; right: 0; height: 1px; }
+  .priority-map .pt { position: absolute; width: 12px; height: 12px; border-radius: 50%; background: var(--accent); transform: translate(-50%, 50%); border: 2px solid var(--paper); }
+  .priority-map .pt.lo { background: var(--ink-mute); }
+  .priority-map .pt .tip { position: absolute; left: 16px; top: -8px; font-size: 10px; white-space: nowrap; font-family: "Shippori Mincho", serif; }
+
+  .report-text .pull-quote {
+    font-family: "Shippori Mincho", serif;
+    font-size: clamp(28px, 3.4vw, 40px);
+    font-weight: 600;
+    line-height: 1.6;
+    margin-bottom: 32px;
+    position: relative;
+    padding-left: 48px;
+    word-break: keep-all;
+    overflow-wrap: normal;
+  }
+  .report-text .pull-quote::before {
+    content: "「";
+    position: absolute; left: 0; top: -10px;
+    font-size: 1.4em;
+    color: var(--accent);
+    font-family: "Shippori Mincho", serif;
+  }
+  .report-text .pull-quote .hl { color: var(--accent); }
+  .report-text p { font-family: "Shippori Mincho", serif; color: var(--ink-soft); margin-bottom: 16px; font-size: 15px; line-height: 2; }
+  .report-features { list-style: none; margin-top: 32px; }
+  .report-features li { display: grid; grid-template-columns: 32px 1fr; gap: 16px; padding: 18px 0; border-bottom: 1px dotted var(--rule); }
+  .report-features li:first-child { border-top: 1px dotted var(--rule); }
+  .report-features li .n { font-family: "Shippori Mincho", serif; font-weight: 700; color: var(--accent); font-size: 20px; line-height: 1; }
+  .report-features li strong { font-family: "Shippori Mincho", serif; display: block; font-weight: 600; font-size: 16px; margin-bottom: 4px; }
+  .report-features li em { font-style: normal; font-family: "Shippori Mincho", serif; color: var(--ink-soft); font-size: 13px; line-height: 1.8; }
+
+  /* TARGET */
+  .target-grid {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 40px;
+  }
+  @media (max-width: 860px) { .target-grid { grid-template-columns: 1fr; } }
+  .target-card { padding: 44px 40px; border: 1px solid var(--ink); background: var(--paper); position: relative; }
+  .target-card.yes { background: var(--paper-2); }
+  .target-card .tc-head {
+    font-family: "Shippori Mincho", serif;
+    font-size: 26px; font-weight: 600;
+    margin-bottom: 8px;
+    display: flex; align-items: baseline; gap: 16px;
+    padding-bottom: 16px; border-bottom: 2px solid var(--ink);
+  }
+  .target-card .tc-head .kanji-badge {
+    display: inline-block; width: 48px; height: 48px;
+    background: var(--ink); color: var(--paper);
+    font-size: 26px; font-weight: 700; line-height: 48px;
+    text-align: center;
+    font-family: "Shippori Mincho", serif;
+  }
+  .target-card.yes .tc-head .kanji-badge { background: var(--accent); }
+  .target-card .lede { font-family: "Shippori Mincho", serif; font-size: 13px; color: var(--ink-mute); margin-bottom: 28px; }
+  .target-card ul { list-style: none; }
+  .target-card li { font-family: "Shippori Mincho", serif; padding: 14px 0 14px 30px; border-bottom: 1px solid var(--rule); font-size: 15px; line-height: 1.7; position: relative; }
+  .target-card li::before { content: ""; position: absolute; left: 0; top: 22px; width: 16px; height: 1px; background: var(--ink-mute); }
+  .target-card.yes li::before { background: var(--accent); height: 2px; top: 22px; }
+  .target-card li:last-child { border-bottom: none; }
+
+  /* PRICING */
+  .pricing-table { border: 1px solid var(--ink); background: var(--paper); }
+  .pricing-row { display: grid; grid-template-columns: 1.4fr 2fr 1fr; padding: 32px 36px; border-bottom: 1px solid var(--rule); align-items: start; gap: 24px; }
+  @media (max-width: 860px) { .pricing-row { grid-template-columns: 1fr; gap: 12px; padding: 24px 20px; } }
+  .pricing-row:last-child { border-bottom: none; }
+  .pricing-row.header { background: var(--ink); color: var(--paper); padding: 18px 36px; font-family: "JetBrains Mono", monospace; font-size: 11px; letter-spacing: 0.2em; }
+  @media (max-width: 860px) { .pricing-row.header { display: none; } }
+  .pricing-row .svc-name { font-family: "Shippori Mincho", serif; font-size: 22px; font-weight: 600; }
+  .pricing-row .svc-name .en { display: block; font-family: "Cormorant Garamond", serif; font-style: italic; color: var(--ink-mute); font-size: 14px; margin-top: 4px; font-weight: 400; }
+  .pricing-row .svc-desc { font-family: "Shippori Mincho", serif; font-size: 14px; color: var(--ink-soft); line-height: 2; }
+  .pricing-row .svc-price { text-align: right; font-family: "Shippori Mincho", serif; font-size: 24px; font-weight: 600; }
+  .pricing-row .svc-price .unit { display: block; font-size: 11px; color: var(--ink-mute); font-weight: 400; margin-top: 4px; letter-spacing: 0.05em; }
+  @media (max-width: 860px) { .pricing-row .svc-price { text-align: left; } }
+  .pricing-row.pack { background: color-mix(in oklab, var(--accent) 5%, var(--paper)); }
+  .pricing-row.pack .svc-name, .pricing-row.pack .svc-price { color: var(--accent-deep); }
+
+  /* QUIZ */
+  .quiz-sec { background: var(--ink); color: var(--paper); padding: 84px 0; border-top: 1px solid var(--ink); border-bottom: 1px solid var(--ink); }
+  .quiz-sec .chap-title, .quiz-sec .chap-num { color: var(--paper); }
+  .quiz-sec .chap-num { color: var(--accent); }
+  .quiz-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: center; }
+  @media (max-width: 860px) { .quiz-grid { grid-template-columns: 1fr; gap: 40px; } }
+  .quiz-text h3 { font-family: "Shippori Mincho", serif; font-size: clamp(28px, 3.8vw, 44px); font-weight: 600; line-height: 1.45; margin-bottom: 24px; }
+  .quiz-text h3 .hl { color: var(--accent); }
+  .quiz-text p { font-family: "Shippori Mincho", serif; color: color-mix(in oklab, var(--paper) 75%, transparent); margin-bottom: 32px; line-height: 2.1; font-size: 16px; }
+  .quiz-mock { background: color-mix(in oklab, var(--paper) 4%, var(--ink)); border: 1px solid color-mix(in oklab, var(--paper) 20%, transparent); padding: 36px; }
+  .quiz-mock .q-num { font-family: "JetBrains Mono", monospace; font-size: 11px; letter-spacing: 0.15em; color: var(--accent); margin-bottom: 12px; }
+  .quiz-mock .q-text { font-family: "Shippori Mincho", serif; font-size: 18px; line-height: 1.8; margin-bottom: 28px; min-height: 90px; }
+  .quiz-mock .q-choices { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .quiz-mock .q-choice { background: transparent; border: 1px solid color-mix(in oklab, var(--paper) 30%, transparent); color: var(--paper); padding: 18px; font-size: 22px; font-family: "Shippori Mincho", serif; transition: all 0.2s; }
+  .quiz-mock .q-choice:hover { background: var(--accent); border-color: var(--accent); color: var(--paper); }
+  .quiz-mock .progress { display: flex; gap: 3px; margin-top: 20px; }
+  .quiz-mock .progress > i { flex: 1; height: 2px; background: color-mix(in oklab, var(--paper) 15%, transparent); }
+  .quiz-mock .progress > i.on { background: var(--accent); }
+
+  /* FAQ */
+  .faq-list { max-width: 960px; margin: 0 auto; }
+  .faq-item { border-top: 1px solid var(--ink); padding: 28px 0; }
+  .faq-item:last-child { border-bottom: 1px solid var(--ink); }
+  .faq-q { display: flex; gap: 24px; align-items: start; cursor: pointer; font-family: "Shippori Mincho", serif; font-size: 18px; font-weight: 600; list-style: none; }
+  .faq-q::-webkit-details-marker { display: none; }
+  .faq-q .n { font-family: "Cormorant Garamond", serif; font-style: italic; color: var(--accent); flex-shrink: 0; width: 40px; font-size: 22px; }
+  .faq-q .mark { margin-left: auto; flex-shrink: 0; font-family: "Shippori Mincho", serif; color: var(--accent); font-size: 22px; font-weight: 300; transition: transform 0.3s; }
+  details[open] .faq-q .mark { transform: rotate(45deg); }
+  .faq-a { padding: 18px 0 0 64px; font-family: "Shippori Mincho", serif; font-size: 15px; line-height: 2.1; color: var(--ink-soft); }
+
+  /* MEMBERS */
+  .members-sec { background: var(--paper-2); }
+  .members-intro { max-width: 42em; font-family: "Shippori Mincho", serif; color: var(--ink-soft); font-size: 16px; line-height: 2.1; margin-bottom: 64px; margin-inline: auto; }
+  .members-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 32px; }
+  @media (max-width: 860px) { .members-grid { grid-template-columns: 1fr; gap: 24px; } }
+  .member { background: var(--paper); border: 1px solid var(--ink); display: flex; flex-direction: column; position: relative; }
+  .member .m-photo { aspect-ratio: 4/5; overflow: hidden; border-bottom: 1px solid var(--ink); position: relative; }
+  .member .m-photo img { width: 100%; height: 100%; object-fit: cover; display: block; filter: sepia(0.05); }
+  .member .m-no {
+    position: absolute; top: 16px; left: 16px;
+    min-width: 44px; height: 44px; padding: 0 10px;
+    background: var(--paper); color: var(--ink);
+    font-family: "Cormorant Garamond", serif; font-style: italic; font-weight: 500; font-size: 20px;
+    display: flex; align-items: center; justify-content: center;
+    border: 1px solid var(--ink);
+  }
+  .member .m-body { padding: 28px 28px 32px; flex: 1; display: flex; flex-direction: column; }
+  .member .m-tag { font-family: "JetBrains Mono", monospace; font-size: 10px; letter-spacing: 0.2em; color: var(--accent); margin-bottom: 12px; }
+  .member .m-name { font-family: "Shippori Mincho", serif; font-size: 22px; font-weight: 600; line-height: 1.4; margin-bottom: 2px; }
+  .member .m-en { font-family: "Cormorant Garamond", serif; font-style: italic; color: var(--ink-mute); font-size: 14px; margin-bottom: 20px; padding-bottom: 16px; border-bottom: 1px solid var(--rule); }
+  .member .m-bio { font-family: "Shippori Mincho", serif; font-size: 13px; line-height: 2; color: var(--ink-soft); margin-bottom: 18px; flex: 1; }
+  .member .m-skills { list-style: none; display: flex; flex-wrap: wrap; gap: 6px; }
+  .member .m-skills li { font-family: "Shippori Mincho", serif; font-size: 11px; padding: 4px 10px; border: 1px solid var(--ink); background: var(--paper); }
+  .team-note { margin-top: 40px; padding: 24px 28px; display: flex; gap: 24px; align-items: baseline; flex-wrap: wrap; border: 1px solid var(--ink); background: var(--paper); }
+  .team-note .k { font-family: "JetBrains Mono", monospace; font-size: 11px; letter-spacing: 0.2em; color: var(--accent); }
+  .team-note span:last-child { font-family: "Shippori Mincho", serif; font-size: 15px; color: var(--ink-soft); }
+
+  /* FINAL / FORM */
+  .final { background: var(--ink); color: var(--paper); padding: 96px 0; }
+  .final-head { text-align: center; max-width: 780px; margin: 0 auto 72px; }
+  .final-head .eyebrow { color: var(--accent); }
+  .final-head h2 { font-family: "Shippori Mincho", serif; font-size: clamp(36px, 5.2vw, 64px); font-weight: 600; line-height: 1.25; margin: 24px 0 24px; }
+  .final-head h2 .hl { color: var(--accent); }
+  .final-head p { font-family: "Shippori Mincho", serif; color: color-mix(in oklab, var(--paper) 75%, transparent); font-size: 16px; line-height: 2.1; }
+  .form-card { max-width: 760px; margin: 0 auto; background: var(--paper); color: var(--ink); padding: 56px 60px; border: 3px double var(--paper); }
+  @media (max-width: 680px) { .form-card { padding: 32px 24px; } }
+  .apply-card { text-align: center; }
+  .apply-lede { font-family: "Shippori Mincho", serif; font-size: 16px; line-height: 2; color: var(--ink-soft); margin-bottom: 32px; text-align: left; }
+  .apply-cta { width: 100%; padding: 22px; background: var(--ink); color: var(--paper); border: none; font-family: "Shippori Mincho", serif; font-size: 16px; letter-spacing: 0.1em; display: flex; justify-content: center; align-items: center; gap: 16px; text-decoration: none; transition: background 0.2s; }
+  .apply-cta:hover { background: var(--accent); }
+  .apply-cta .arrow { font-family: "Cormorant Garamond", serif; font-style: italic; font-size: 22px; }
+  .form-note { font-size: 12px; color: var(--ink-mute); text-align: center; margin-top: 16px; font-family: "Shippori Mincho", serif; }
+
+  /* FOOTER */
+  footer { background: var(--paper); color: var(--ink); padding: 56px 0 36px; border-top: 3px double var(--ink); }
+  .foot-grid { display: flex; justify-content: space-between; align-items: start; flex-wrap: wrap; gap: 24px; }
+  footer .mast-logo { font-size: 24px; }
+  .foot-links { display: flex; gap: 32px; font-family: "Shippori Mincho", serif; font-size: 14px; color: var(--ink-soft); }
+  .foot-links a { text-decoration: none; }
+  .foot-links a:hover { color: var(--accent); }
+  .copy { margin-top: 40px; padding-top: 24px; border-top: 1px solid var(--rule); font-family: "JetBrains Mono", monospace; font-size: 10px; color: var(--ink-mute); letter-spacing: 0.12em; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 12px; }
+
+  /* ==================== MOBILE REFINEMENTS ==================== */
+  @media (max-width: 680px) {
+    body { line-height: 1.8; }
+    .wrap { padding: 0 16px; }
+    .masthead { padding: 14px 0 12px; }
+    .masthead-inner { padding: 0 16px; gap: 12px; }
+    .mast-logo { font-size: 22px; }
+    .mast-logo .sub { font-size: 10px; margin-left: 6px; }
+    .issue { font-size: 9px; }
+    .mast-cta { padding: 8px 14px; font-size: 11px; }
+    .mast-left { gap: 10px; }
+
+    /* HERO */
+    .hero { padding: 36px 0 56px; }
+    .hero-grid { gap: 24px; min-height: 0; }
+    .hero-spine { padding-bottom: 12px; }
+    .hero-spine .chapter { font-size: 11px; letter-spacing: 0.3em; }
+    .hero-spine .folio { font-size: 10px; }
+    .hero-kicker { font-size: 11px; letter-spacing: 0.2em; margin-bottom: 20px; gap: 10px; }
+    .hero-kicker .rule { width: 28px; }
+    .hero-title { font-size: clamp(32px, 8.5vw, 44px); line-height: 1.35; margin-bottom: 24px; }
+    .hero-title .small { font-size: 0.38em; margin-top: 14px; letter-spacing: 0.04em; line-height: 1.7; }
+    .hero-lede { font-size: 15px; line-height: 2; margin-bottom: 28px; }
+    .hero-lede .lead { font-size: 17px; margin-bottom: 10px; }
+    .btn-primary { padding: 16px 24px; font-size: 13px; }
+    .btn-ghost { font-size: 13px; }
+    .hero-ctas { gap: 14px; }
+    .hero-side { padding: 22px 22px 26px; }
+    .hero-side::before { top: 8px; left: 8px; right: -8px; bottom: -8px; }
+    .hero-side .side-title { font-size: 13px; }
+    .hero-side dl { grid-template-columns: 70px 1fr; gap: 10px 14px; }
+    .hero-side dt { font-size: 10px; }
+    .hero-side dd { font-size: 14px; }
+    .hero-side dd em { font-size: 22px; }
+
+    /* CHAP HEAD */
+    .chap-num { font-size: 32px; }
+    .chap-num .th { font-size: 12px; }
+    .chap-title { font-size: clamp(22px, 5.8vw, 26px); line-height: 1.5; }
+    .chap-en { text-align: left; font-size: 14px; margin-top: 4px; }
+
+    /* PROBLEM */
+    .problem-lead { font-size: 18px; line-height: 1.9; }
+    .problem-lead .big { font-size: 1.4em; margin: 16px 0; padding-left: 20px; border-left-width: 3px; }
+    .contrast-box { grid-template-columns: 1fr; }
+    .contrast-box > div { padding: 24px 20px; }
+    .contrast-box > div:first-child::after { right: 50%; top: auto; bottom: -14px; transform: translate(50%, 0); }
+    .contrast-box .big-jp { font-size: 26px; margin-bottom: 12px; }
+    .contrast-box .text { font-size: 13px; line-height: 1.9; }
+
+    /* SERVICES */
+    .svc-card { padding: 32px 0 0; }
+    .svc-card .svc-kanji { font-size: 11px; letter-spacing: 0.3em; top: 16px; height: 100px; }
+    .svc-card h3 { font-size: 24px; padding-right: 40px; }
+    .svc-card .svc-sub { font-size: 15px; margin-bottom: 20px; }
+    .svc-card .svc-desc { font-size: 14px; padding-right: 0; margin-bottom: 24px; }
+    .svc-card dl { grid-template-columns: 80px 1fr; gap: 10px 16px; font-size: 13px; padding: 18px 0; margin-bottom: 22px; }
+    .svc-card dt { font-size: 10px; }
+    .svc-card dd { font-size: 13px; }
+    .svc-card .price-tag .price { font-size: 28px; }
+    .svc-card .price-tag .price .yen { font-size: 18px; }
+    .svc-card .cta { padding: 14px 22px; font-size: 13px; }
+    .svc-card.featured::before { top: -16px; width: 32px; height: 32px; font-size: 16px; }
+
+    /* FLOW */
+    .flow-step { padding: 18px 0; }
+    .flow-step .step-num { font-size: 32px; }
+    .flow-step .step-kanji { font-size: 18px; }
+    .flow-step .step-desc { font-size: 13px; }
+    .logic-spread { margin-top: 48px; padding: 20px; }
+    .logic-side .tatetitle { font-size: 22px; margin-bottom: 8px; }
+    .logic-side .fig { font-size: 13px; }
+    .logic-col { padding: 16px 14px; }
+    .logic-col .jp { font-size: 16px; }
+    .logic-col ul { font-size: 12px; }
+    .arrow { font-size: 22px; }
+
+    /* REPORT */
+    .report-mock { padding: 26px 20px; box-shadow: 6px 6px 0 0 var(--ink); }
+    .report-mock .mock-head h5 { font-size: 13px; }
+    .report-mock h6 { font-size: 15px; }
+    .bar-row { grid-template-columns: 90px 1fr 36px; gap: 8px; }
+    .bar-row .lbl { font-size: 12px; }
+    .bar-row .val { font-size: 10px; }
+    .priority-map .pt .tip { font-size: 9px; }
+    .priority-map .axis { font-size: 8px; }
+    .priority-map .axis.y-min, .priority-map .axis.y-max { right: -44px; }
+    .report-text .pull-quote { font-size: 24px; line-height: 1.6; padding-left: 34px; margin-bottom: 24px; }
+    .report-text p { font-size: 14px; }
+    .report-features li { grid-template-columns: 28px 1fr; gap: 12px; padding: 14px 0; }
+    .report-features li strong { font-size: 15px; }
+    .report-features li em { font-size: 12px; }
+
+    /* TARGET */
+    .target-card { padding: 28px 22px; }
+    .target-card .tc-head { font-size: 20px; gap: 12px; padding-bottom: 12px; }
+    .target-card .tc-head .kanji-badge { width: 38px; height: 38px; font-size: 20px; line-height: 38px; }
+    .target-card li { font-size: 14px; padding: 12px 0 12px 24px; line-height: 1.7; }
+    .target-card li::before { top: 20px; width: 12px; }
+
+    /* PRICING */
+    .pricing-row .svc-name { font-size: 18px; }
+    .pricing-row .svc-name .en { font-size: 12px; }
+    .pricing-row .svc-desc { font-size: 13px; line-height: 1.9; }
+    .pricing-row .svc-price { font-size: 22px; }
+
+    /* QUIZ */
+    .quiz-text h3 { font-size: 22px; line-height: 1.55; }
+    .quiz-text p { font-size: 14px; line-height: 2; margin-bottom: 24px; }
+    .quiz-mock { padding: 24px 20px; }
+    .quiz-mock .q-num { font-size: 10px; }
+    .quiz-mock .q-text { font-size: 15px; min-height: 70px; margin-bottom: 20px; }
+    .quiz-mock .q-choice { padding: 14px; font-size: 18px; }
+
+    /* FAQ */
+    .faq-q { font-size: 15px; gap: 14px; }
+    .faq-q .n { width: 28px; font-size: 18px; }
+    .faq-a { padding-left: 42px; font-size: 14px; line-height: 2; }
+
+    /* MEMBERS */
+    .members-sec { }
+    .members-intro { font-size: 14px; margin-bottom: 32px; line-height: 2; }
+    .member .m-photo { aspect-ratio: 3/2; }
+    .member .m-body { padding: 20px 20px 22px; }
+    .member .m-name { font-size: 19px; }
+    .member .m-en { font-size: 13px; margin-bottom: 14px; padding-bottom: 12px; }
+    .member .m-bio { font-size: 13px; line-height: 1.9; margin-bottom: 14px; }
+    .team-note { padding: 18px 20px; gap: 12px; }
+    .team-note span:last-child { font-size: 13px; }
+
+    /* FINAL */
+    .final { padding: 56px 0; }
+    .final-head { margin-bottom: 40px; }
+    .final-head h2 { font-size: clamp(24px, 7vw, 32px); margin: 16px 0; line-height: 1.4; }
+    .final-head p { font-size: 14px; line-height: 2; }
+    .form-card { padding: 26px 20px; }
+    .apply-lede { font-size: 14px; line-height: 2; margin-bottom: 24px; }
+    .apply-cta { padding: 18px; font-size: 15px; }
+
+    /* FOOTER */
+    footer { padding: 36px 0 28px; }
+    .foot-grid { flex-direction: column; gap: 20px; }
+    .foot-links { flex-wrap: wrap; gap: 16px 20px; font-size: 13px; }
+    .copy { flex-direction: column; gap: 6px; font-size: 9px; }
+
+    /* GIANT KANJI — reduce on mobile so they don't feel cluttered */
+    .giant-kanji { font-size: 200px; opacity: 0.03; }
+  }
+
+  /* Hidden kanji decoration */
+  .giant-kanji {
+    position: absolute; font-family: "Shippori Mincho", serif; font-weight: 700;
+    font-size: 360px; color: var(--ink); opacity: 0.04;
+    line-height: 0.8; pointer-events: none; user-select: none;
+    z-index: 0;
+  }
+</style>
+</head>
+<body data-screen-label="MYT Coaching LP v2">
+
+<!-- MASTHEAD -->
+<header class="masthead">
+  <div class="masthead-inner">
+    <div class="mast-left">
+      <span class="issue">VOL.01 / 2026 春</span>
+      <div class="mast-logo">MYT<span class="sub">Coaching</span></div>
+    </div>
+    <div class="mast-right">
+      <a href="#service">サービス</a>
+      <a href="#flow">診断フロー</a>
+      <a href="#report">レポート</a>
+      <a href="#pricing">料金</a>
+      <a href="#faq">Q&amp;A</a>
+      <a href="#apply" class="mast-cta">申込む</a>
+    </div>
+  </div>
+</header>
+
+<!-- HERO -->
+<section class="hero">
+  <span class="giant-kanji" style="top: 80px; right: -20px;" aria-hidden="true">煙</span>
+  <div class="wrap">
+    <div class="hero-grid">
+      <div class="hero-spine">
+        <div class="chapter"></div>
+        <div class="folio">P. 001</div>
+      </div>
+
+      <div class="hero-main">
+        <div>
+          <div class="hero-kicker"><span class="rule"></span><span>技術 × 経営 統合診断</span></div>
+          <h1 class="hero-title">
+            <span class="strong-word">品質</span>も、<span class="strong-word">利益</span>も、<br>あきらめない店へ。
+            <span class="small">— シーシャ店のための、技術と経営の統合診断。</span>
+          </h1>
+          <p class="hero-lede">
+            <span class="lead">「味は褒められるのに、利益が残らない」。</span>
+            その原因は、技術と経営を別々に見ているからかもしれません。
+            全55問の診断で、あなたの店のボトルネックを特定。
+            約30日でレポートを納品し、翌週から動ける4週間のToDoに落とし込んでお返しします。
+          </p>
+          <div class="hero-ctas">
+            <a href="#apply" class="btn-primary"><span>統合診断に申し込む</span><span class="arrow">→</span></a>
+            <a href="#quiz" class="btn-ghost">まずはクイズで現在地を知る</a>
+          </div>
+        </div>
+      </div>
+
+      <aside class="hero-side">
+        <div class="side-title"><span>目次</span><span class="num italic-en">Contents</span></div>
+        <dl>
+          <dt>Q / 設問</dt><dd><em>55</em>問の○×</dd>
+          <dt>T / 期間</dt><dd><em>30</em>日</dd>
+          <dt>P / 料金</dt><dd><em>¥55,000</em><span style="font-size:11px; color: var(--ink-mute); margin-left:4px;">税込</span></dd>
+          <dt>L / 枠</dt><dd><em>5</em>件 / 月</dd>
+        </dl>
+        <span class="hanko">診</span>
+      </aside>
+    </div>
+  </div>
+</section>
+
+<!-- PROBLEM -->
+<section class="problem chap" id="problem">
+  <div class="wrap">
+    <div class="chap-head">
+      <div class="chap-num">01<span class="th">ST</span></div>
+      <h2 class="chap-title">なぜ、繁盛しているのに利益が残らないのか</h2>
+      <div class="chap-en">— The Problem</div>
+    </div>
+
+    <div class="problem-grid">
+      <div class="problem-lead mincho">
+        「リピートが伸びない」「味の再現性がない」「人件費率が高い」——
+        <span class="big">これらは<span class="redmark">別々の<br>問題</span>ではなかった。</span>
+        同じ一本の線の上に、原因と結果が並んでいる。
+      </div>
+
+      <div class="contrast-box">
+        <div>
+          <div class="tag">技術の現場</div>
+          <div class="big-jp">味の再現性</div>
+          <div class="text">パッキング、熱管理、提供時間。現場の感覚はあるが、数字に翻訳できない。</div>
+        </div>
+        <div>
+          <div class="tag">経営の数字</div>
+          <div class="big-jp">帳簿の数字</div>
+          <div class="text">客単価、粗利、人件費、回転率。数字は見えるが、どの一手が効くか分からない。</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SERVICES -->
+<section class="chap" id="service">
+  <span class="giant-kanji" style="top: 40px; left: -20px;" aria-hidden="true">味</span>
+  <div class="wrap">
+    <div class="chap-head">
+      <div class="chap-num">02<span class="th">ND</span></div>
+      <h2 class="chap-title">二本立て。設計から定着まで</h2>
+      <div class="chap-en">— The Services</div>
+    </div>
+
+    <div class="services-spread">
+      <div class="svc-card featured">
+        <span class="svc-kanji">統合診断</span>
+        <h3>技術 × 経営の統合診断</h3>
+        <div class="svc-sub italic-en">Integrated Diagnostic</div>
+        <p class="svc-desc">55問の回答から、ボトルネックと優先順位を抽出。約30日でレポートを納品し、翌週から動ける4週間の実行計画（ToDo）に落とし込みます。</p>
+        <dl>
+          <dt>納品物</dt><dd>レポート／優先順位表／4週ToDo</dd>
+          <dt>期間</dt><dd>申込から約30日</dd>
+          <dt>形式</dt><dd>PDF ＋ オンライン説明60分</dd>
+          <dt>枠</dt><dd>月5件限定（抽選）</dd>
+        </dl>
+        <div class="price-tag">
+          <span class="price"><span class="yen">¥</span>55,000</span>
+          <span class="unit">一括／税込</span>
+        </div>
+        <div class="limit-note"><span class="dot"></span>月5枠／抽選運用中</div>
+        <div>
+          <a href="#apply" class="cta">診断に申し込む<span class="italic-en">→</span></a>
+        </div>
+      </div>
+
+      <div class="svc-card">
+        <span class="svc-kanji">伴走支援</span>
+        <h3>技術 × 経営コーチング</h3>
+        <div class="svc-sub italic-en">12-month Retainer</div>
+        <p class="svc-desc">設計で終わらせない。週次〜隔週のセッションと月次KPI棚卸で、実装と定着まで12ヶ月伴走します。</p>
+        <dl>
+          <dt>期間</dt><dd>12ヶ月（3ヶ月レビュー）</dd>
+          <dt>頻度</dt><dd>週次or隔週 60分 ＋ 月1訪問</dd>
+          <dt>エリア</dt><dd>関西圏／関東圏</dd>
+          <dt>同時枠</dt><dd>最大5社</dd>
+        </dl>
+        <div class="price-tag">
+          <span class="price">技術 ¥50,000</span>
+          <span class="unit">/月 × スタッフ数</span>
+        </div>
+        <div class="price-tag" style="border-bottom: none; padding-top: 0;">
+          <span class="price">経営 ¥80,000</span>
+          <span class="unit">/月</span>
+        </div>
+        <div class="limit-note" style="color: var(--ink-mute);"><span class="dot" style="background: var(--ink-mute);"></span>診断通過後のご案内</div>
+        <div>
+          <a href="#apply" class="cta">詳細を相談する<span class="italic-en">→</span></a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FLOW -->
+<section class="chap flow-bg" id="flow">
+  <div class="wrap">
+    <div class="chap-head">
+      <div class="chap-num">03<span class="th">RD</span></div>
+      <h2 class="chap-title">申込から納品まで、30日</h2>
+      <div class="chap-en">— The Flow</div>
+    </div>
+
+    <div class="flow-steps">
+      <div class="flow-step"><div class="step-num italic-en">01</div><div class="step-kanji">申込・審査</div><div class="step-desc">DM/フォームで申込→品質担保のための審査</div></div>
+      <div class="flow-step"><div class="step-num italic-en">02</div><div class="step-kanji">決済・提出</div><div class="step-desc">決済後7日以内に資料提出</div></div>
+      <div class="flow-step"><div class="step-num italic-en">03</div><div class="step-kanji">55問回答</div><div class="step-desc">技術30問＋経営25問の○×診断</div></div>
+      <div class="flow-step"><div class="step-num italic-en">04</div><div class="step-kanji">分析・制作</div><div class="step-desc">ギャップ抽出→優先順位→4週ToDo生成</div></div>
+      <div class="flow-step"><div class="step-num italic-en">05</div><div class="step-kanji">納品・説明</div><div class="step-desc">PDF納品＋60分のオンライン説明</div></div>
+    </div>
+
+    <div class="logic-spread">
+      <div class="logic-side">
+        <div class="tatetitle">診断の型</div>
+        <div class="fig italic-en">— fig. 02 / logic —</div>
+      </div>
+      <div class="logic-cols">
+        <div class="logic-col">
+          <div class="ttl italic-en">Input</div>
+          <div class="jp">55問 ○/×</div>
+          <ul><li>シーシャ技術 30問</li><li>経営知識 25問</li><li>自己評価形式</li></ul>
+          <div class="count">Q = 55</div>
+        </div>
+        <div class="arrow">→</div>
+        <div class="logic-col">
+          <div class="ttl italic-en">Process</div>
+          <div class="jp">ギャップ抽出</div>
+          <ul><li>Task Library 参照</li><li>優先度 P0/P1/P2</li><li>推奨Week 割当</li></ul>
+          <div class="count">Confirmatory + Exploratory</div>
+        </div>
+        <div class="arrow">→</div>
+        <div class="logic-col" style="background: color-mix(in oklab, var(--accent) 8%, var(--paper));">
+          <div class="ttl italic-en">Output</div>
+          <div class="jp">レポート納品</div>
+          <ul><li>Scoreboard / Priority Map</li><li>4週間 ToDo</li><li>今週やること</li></ul>
+          <div class="count">PDF / Google Docs</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- REPORT -->
+<section class="chap" id="report">
+  <span class="giant-kanji" style="top: 80px; right: -30px;" aria-hidden="true">診</span>
+  <div class="wrap">
+    <div class="chap-head">
+      <div class="chap-num">04<span class="th">TH</span></div>
+      <h2 class="chap-title">納品レポート、一部公開</h2>
+      <div class="chap-en">— Deliverable</div>
+    </div>
+
+    <div class="report-grid">
+      <div class="report-mock">
+        <div class="mock-head">
+          <h5>【診断レポート】技術×経営 総合ポテンシャル診断</h5>
+          <span>v2 / 2026</span>
+        </div>
+        <h6>Scoreboard — 6カテゴリ別</h6>
+        <div class="bar-row"><span class="lbl">セッティング</span><div class="bar"><span style="width: 82%"></span></div><span class="val">82%</span></div>
+        <div class="bar-row"><span class="lbl">パッキング</span><div class="bar"><span style="width: 64%"></span></div><span class="val">64%</span></div>
+        <div class="bar-row"><span class="lbl">熱管理</span><div class="bar"><span style="width: 46%"></span></div><span class="val">46%</span></div>
+        <div class="bar-row"><span class="lbl">売上分解</span><div class="bar"><span style="width: 72%"></span></div><span class="val">72%</span></div>
+        <div class="bar-row"><span class="lbl">原価管理</span><div class="bar"><span style="width: 38%"></span></div><span class="val">38%</span></div>
+        <div class="bar-row"><span class="lbl">人件費率</span><div class="bar"><span style="width: 55%"></span></div><span class="val">55%</span></div>
+
+        <h6 style="margin-top: 32px;">Priority Map</h6>
+        <div class="priority-map">
+          <span class="axis x-min">影響 低</span>
+          <span class="axis x-max">影響 高</span>
+          <span class="axis y-min">着手 易</span>
+          <span class="axis y-max">着手 難</span>
+          <span class="pt" style="left: 75%; bottom: 65%;"><span class="tip">熱管理SOP化</span></span>
+          <span class="pt" style="left: 62%; bottom: 78%;"><span class="tip">原価棚卸</span></span>
+          <span class="pt lo" style="left: 28%; bottom: 30%;"><span class="tip">メニュー並び替え</span></span>
+          <span class="pt lo" style="left: 40%; bottom: 22%;"></span>
+          <span class="pt" style="left: 85%; bottom: 40%;"><span class="tip">スタッフ教育</span></span>
+        </div>
+      </div>
+
+      <div class="report-text">
+        <div class="pull-quote">数字の羅列ではなく、<br><span class="hl">行動の台本</span>を。」</div>
+        <p>レポートは読むためではなく、来週から動くために作ります。事実／仮説／提案を明確に分離し、P-hacking（都合の良い切り取り）を防ぐ分析計画を先に固定します。</p>
+        <ul class="report-features">
+          <li><span class="n">01</span><span><strong>Scoreboard</strong><em>55項目を6カテゴリに集約。弱点が一目でわかる。</em></span></li>
+          <li><span class="n">02</span><span><strong>Priority Map</strong><em>「影響 × 着手の容易さ」で優先順位を可視化。</em></span></li>
+          <li><span class="n">03</span><span><strong>4週ToDo</strong><em>優先度P0/P1/P2・担当・期限まで落とし込んだ実行計画。</em></span></li>
+          <li><span class="n">04</span><span><strong>今やらないこと</strong><em>集中のため、意図的に捨てる論点を明示。</em></span></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TARGET -->
+<section class="chap" id="target">
+  <div class="wrap">
+    <div class="chap-head">
+      <div class="chap-num">05<span class="th">TH</span></div>
+      <h2 class="chap-title">向いている方、向いていない方</h2>
+      <div class="chap-en">— Who it's for</div>
+    </div>
+
+    <div class="target-grid">
+      <div class="target-card yes">
+        <div class="tc-head"><span class="kanji-badge">適</span>こんな方に</div>
+        <p class="lede">For / こんなオーナーに向いています</p>
+        <ul>
+          <li>新規開業を準備中で、立ち上げから設計したい</li>
+          <li>既存店のリブランディングを検討している</li>
+          <li>「味」と「数字」を分断せず、統合的に改善したい</li>
+          <li>現場課題は具体、実行意欲はある</li>
+          <li>提出物を自分で揃えられる</li>
+        </ul>
+      </div>
+      <div class="target-card no">
+        <div class="tc-head"><span class="kanji-badge">否</span>向いていない場合</div>
+        <p class="lede">Not for / こちらの案件はお受けできません</p>
+        <ul>
+          <li>すべてを丸投げしたい（伴走型のため）</li>
+          <li>期限遵守が難しい／提出遅延の可能性</li>
+          <li>過度な値引き交渉を前提としている</li>
+          <li>攻撃的なコミュニケーションが想定される</li>
+          <li>1ヶ月未満での「魔法」を期待している</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section class="chap" id="pricing">
+  <div class="wrap">
+    <div class="chap-head">
+      <div class="chap-num">06<span class="th">TH</span></div>
+      <h2 class="chap-title">料金表</h2>
+      <div class="chap-en">— Pricing</div>
+    </div>
+
+    <div class="pricing-table">
+      <div class="pricing-row header"><div>SERVICE</div><div>DESCRIPTION</div><div style="text-align: right;">PRICE</div></div>
+      <div class="pricing-row">
+        <div class="svc-name">統合診断<span class="en">Integrated Diagnostic</span></div>
+        <div class="svc-desc">55問の診断＋レポート＋優先順位＋4週ToDo＋オンライン説明60分。枠：月5件限定（抽選）。</div>
+        <div class="svc-price">¥55,000<span class="unit">一括／税込</span></div>
+      </div>
+      <div class="pricing-row">
+        <div class="svc-name">コーチング・技術<span class="en">Tech Coaching</span></div>
+        <div class="svc-desc">週次or隔週セッション＋月1訪問（関西・関東）。技術標準化、教育、品質再現性。</div>
+        <div class="svc-price">¥50,000<span class="unit">/月 × スタッフ数</span></div>
+      </div>
+      <div class="pricing-row">
+        <div class="svc-name">コーチング・経営<span class="en">Biz Coaching</span></div>
+        <div class="svc-desc">月次KPI棚卸・粗利／人件費モニタリング・意思決定の伴走。</div>
+        <div class="svc-price">¥80,000<span class="unit">/月</span></div>
+      </div>
+      <div class="pricing-row pack">
+        <div class="svc-name">よくある構成<span class="en">Typical package</span></div>
+        <div class="svc-desc">診断（単発55,000円）→ 技術コーチング（スタッフ3名想定）＋経営コーチング。月次目安 ¥230,000（スタッフ数により変動）。</div>
+        <div class="svc-price">¥55,000〜<span class="unit">診断→月額</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- QUIZ -->
+<section class="quiz-sec" id="quiz">
+  <div class="wrap">
+    <div class="chap-head">
+      <div class="chap-num">07<span class="th">TH</span></div>
+      <h2 class="chap-title">まずは、5分で現在地を</h2>
+      <div class="chap-en">— Pre-check</div>
+    </div>
+
+    <div class="quiz-grid">
+      <div class="quiz-text">
+        <h3>本診断の<span class="hl">前に</span>。<br>無料で、現在地を知る。</h3>
+        <p>ポテンシャル可視化クイズは統合診断の縮小版。55問の一部を○×形式で答えるだけで、技術と経営のざっくりとしたバランスが見えてきます。本診断に進む前の最初の一歩としてどうぞ。</p>
+        <a href="index.html" class="btn-primary" style="background: var(--accent); border-color: var(--accent); color: var(--paper);"><span>無料クイズを始める</span><span class="arrow">→</span></a>
+      </div>
+      <div class="quiz-mock">
+        <div class="q-num">Q. 03 / 55 — カテゴリ：熱管理</div>
+        <div class="q-text">炭の熾し直しを、提供中に行う頻度は「店舗ルールとして」明文化されている。</div>
+        <div class="q-choices"><button class="q-choice">○</button><button class="q-choice">×</button></div>
+        <div class="progress"><i class="on"></i><i class="on"></i><i class="on"></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="chap" id="faq">
+  <div class="wrap">
+    <div class="chap-head">
+      <div class="chap-num">08<span class="th">TH</span></div>
+      <h2 class="chap-title">よくあるご質問</h2>
+      <div class="chap-en">— Q&amp;A</div>
+    </div>
+
+    <div class="faq-list">
+      <details class="faq-item"><summary class="faq-q"><span class="n">01</span><span>なぜ「シーシャ店」に特化しているのですか？</span><span class="mark">＋</span></summary><div class="faq-a">シーシャは、飲食業の中でも「技術の再現性」が売上と利益に直結する業態です。フレーバー選定・パッキング・熱管理のばらつきが、客単価・再来店・粗利を左右します。技術と経営を別々に見ては、構造がほぐれない。だから統合診断の型が効きます。</div></details>
+      <details class="faq-item"><summary class="faq-q"><span class="n">02</span><span>審査で落ちることはありますか？</span><span class="mark">＋</span></summary><div class="faq-a">あります。品質担保とミスマッチ防止のため、事前審査を行っています。課題が抽象的すぎる場合、期限遵守が難しい場合、過度な値引き交渉がある場合などは、お見送りすることがあります。</div></details>
+      <details class="faq-item"><summary class="faq-q"><span class="n">03</span><span>「抽選運用」とは何ですか？</span><span class="mark">＋</span></summary><div class="faq-a">月5件の枠を超えた場合、審査通過者のみを対象に抽選を行います。当選連絡から48時間以内に決済いただけなかった場合は失効し、繰上げで次の方にご案内します。</div></details>
+      <details class="faq-item"><summary class="faq-q"><span class="n">04</span><span>診断を受けたら、必ずコーチングに進む必要がありますか？</span><span class="mark">＋</span></summary><div class="faq-a">いいえ。診断は単発で完結するサービスです。レポートとToDoをご自身で運用いただいて構いません。コーチングは、設計を実装・定着までご一緒したい方向けの任意のオプションです。</div></details>
+      <details class="faq-item"><summary class="faq-q"><span class="n">05</span><span>訪問エリアを教えてください。</span><span class="mark">＋</span></summary><div class="faq-a">関西圏・関東圏のみ、月1回までの訪問を含みます。それ以外の地域の方はオンラインでの伴走が中心となります。ご相談ください。</div></details>
+      <details class="faq-item"><summary class="faq-q"><span class="n">06</span><span>データが揃っていないのですが、診断できますか？</span><span class="mark">＋</span></summary><div class="faq-a">可能な範囲で診断します。ただし、データ不足・欠損はレポート冒頭で明示し、その制約下での分析であることを明記します。必要なら追加取得のご提案も含めてお返しします。</div></details>
+    </div>
+  </div>
+</section>
+
+<!-- MEMBERS -->
+<section class="chap members-sec" id="members">
+  <div class="wrap">
+    <div class="chap-head">
+      <div class="chap-num">09<span class="th">TH</span></div>
+      <h2 class="chap-title">プロジェクトメンバー</h2>
+      <div class="chap-en">— The Team</div>
+    </div>
+
+    <p class="members-intro">シーシャ技術・経営分析・現場オペレーション。3人のメンバーが、異なる視点から1店舗の改善にあたります。</p>
+
+    <!-- TODO: 以下3名分のm-name/m-en/m-bio/m-skillsを実データに差し替え -->
+    <div class="members-grid">
+      <article class="member">
+        <div class="m-photo"><img src="IMG_7313.JPG" alt="TODO: メンバー01実名と肩書" style="object-position: center top;"><div class="m-no">01</div></div>
+        <div class="m-body">
+          <div class="m-tag">TECH LEAD</div>
+          <div class="m-name">HARI</div>
+          <div class="m-en italic-en">Shisha Tech Lead</div>
+          <p class="m-bio">TODO: メンバー01の略歴（2〜3行）。シーシャ店の現場オペレーション歴10年以上。パッキング・熱管理・提供フローの標準化と、スタッフ教育の設計を担当します。</p>
+          <ul class="m-skills"><li>技術標準化</li><li>スタッフ教育</li><li>提供オペ</li></ul>
+        </div>
+      </article>
+      <article class="member">
+        <div class="m-photo"><img src="IMG_7312.JPG" alt="TODO: メンバー02実名と肩書" style="object-position: center top;"><div class="m-no">02</div></div>
+        <div class="m-body">
+          <div class="m-tag">OPS / COACH</div>
+          <div class="m-name">YUYA</div>
+          <div class="m-en italic-en">Coach &amp; Ops</div>
+          <p class="m-bio">TODO: メンバー02の略歴（2〜3行）。週次セッションと月次KPI棚卸の進行役。現場への訪問・実装の定着と、診断→コーチングへの橋渡しを担当します。</p>
+          <ul class="m-skills"><li>伴走コーチ</li><li>実装定着</li><li>訪問対応</li></ul>
+        </div>
+      </article>
+      <article class="member">
+        <div class="m-photo"><img src="DSC04659.JPG" alt="TODO: メンバー03実名と肩書" style="object-position: center top;"><div class="m-no">03</div></div>
+        <div class="m-body">
+          <div class="m-tag">BIZ LEAD</div>
+          <div class="m-name">TOSHI</div>
+          <div class="m-en italic-en">Business Analyst</div>
+          <p class="m-bio">TODO: メンバー03の略歴（2〜3行）。飲食業を中心に経営データ分析と改善支援に従事。売上分解・粗利/人件費モニタリングとP-hacking防止プロトコルの設計を担当します。</p>
+          <ul class="m-skills"><li>売上分解</li><li>KPI設計</li><li>分析計画</li></ul>
+        </div>
+      </article>
+    </div>
+
+    <div class="team-note">
+      <span class="k">PROJECT MODEL</span>
+      <span>診断は3名でレビュー／コーチングは主担当＋副担当制。視点の偏りをチームで補正します。</span>
+    </div>
+  </div>
+</section>
+
+<!-- APPLY -->
+<section id="apply" class="final">
+  <div class="wrap">
+    <div class="final-head">
+      <div class="eyebrow">10 / APPLY</div>
+      <h2>月に、<span class="hl">5店舗</span>だけ。<br>一緒にはじめませんか。</h2>
+      <p>申込は受付→審査→（必要時）抽選の順に進みます。審査通過者のみご案内し、DMでのやり取りは行いません。</p>
+    </div>
+
+    <div class="form-card apply-card">
+      <p class="apply-lede">申込フォームはGoogleフォームでご用意しています。下のボタンから必要事項をご記入のうえ送信ください。原則24時間以内に審査結果をお返しします。</p>
+      <!-- TODO: Google フォームの公開URLに差し替え -->
+      <a href="#" class="apply-cta" target="_blank" rel="noopener noreferrer"><span>Googleフォームで申し込む</span><span class="arrow">→</span></a>
+      <div class="form-note">※ 別タブでGoogleフォームが開きます</div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="wrap">
+    <div class="foot-grid">
+      <div>
+        <div class="mast-logo">MYT<span class="sub">Coaching</span></div>
+        <div style="font-family: 'Shippori Mincho', serif; font-size: 13px; color: var(--ink-mute); margin-top: 12px; max-width: 26em; line-height: 2;">シーシャ技術×経営の統合診断・伴走コーチング。品質と利益、どちらもあきらめない店づくりを。</div>
+      </div>
+      <div class="foot-links">
+        <a href="#service">サービス</a>
+        <a href="#pricing">料金</a>
+        <a href="#faq">Q&amp;A</a>
+        <a href="#apply">申込</a>
+        <a href="#">特商法</a>
+        <a href="#">プライバシー</a>
+      </div>
+    </div>
+    <div class="copy">
+      <span>© 2026 MYT COACHING — INTEGRATED TECH × MANAGEMENT</span>
+      <span>事実・仮説・提案 / NO P-HACKING</span>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

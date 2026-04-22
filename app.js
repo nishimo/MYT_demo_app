@@ -663,7 +663,7 @@ function showQuestion() {
     startTimer(timerSeconds);
 }
 
-// 回答選択（変更可能）
+// 回答選択
 function answer(userAnswer) {
     const q = currentQuestions[currentIndex];
     const btnCorrect = document.getElementById('btnCorrect');
@@ -673,18 +673,32 @@ function answer(userAnswer) {
     // 選択状態を保存
     selectedAnswer = userAnswer;
 
-    // ボタンのスタイルをリセット
+    // ボタンのスタイルをリセット → 選択中を強調
     btnCorrect.className = 'answer-btn correct-btn';
     btnWrong.className = 'answer-btn wrong-btn';
-
-    // 選択中のボタンを強調表示
     if (userAnswer) {
         btnCorrect.classList.add('selected');
     } else {
         btnWrong.classList.add('selected');
     }
 
-    // フィードバック表示（選択中、解説なし）
+    // 問1〜8で「○ できる」を選んだ場合：説明入力シートを即表示
+    if (currentIndex < 8 && userAnswer === true) {
+        // 説明入力シートを開く（ボタンは有効のまま＝選択変更可）
+        document.getElementById('explanationInput').style.display = 'block';
+        document.getElementById('explanationLabel').textContent =
+            '自分の言葉で説明してください';
+        document.getElementById('submitExplanationBtn').style.display = 'block';
+        document.getElementById('nextBtn').style.display = 'none';
+        document.getElementById('confirmBtn').style.display = 'none';
+        document.getElementById('feedback').style.display = 'none';
+
+        // 説明入力用タイマー開始（まだ回答は確定していない）
+        startExplanationTimer();
+        return;
+    }
+
+    // それ以外：選択中表示のみ、確定ボタンを出す
     feedback.style.display = 'block';
     feedback.className = 'feedback info';
     if (q.type === 'self-eval') {
@@ -696,27 +710,36 @@ function answer(userAnswer) {
     }
     document.getElementById('feedbackText').textContent = '変更する場合は別のボタンを押してください';
 
-    // 確定ボタン表示、次へボタン非表示
     document.getElementById('confirmBtn').style.display = 'block';
     document.getElementById('nextBtn').style.display = 'none';
+    // 説明入力シートが開いていれば閉じ、通常タイマーに戻す
+    if (document.getElementById('explanationInput').style.display !== 'none') {
+        document.getElementById('explanationInput').style.display = 'none';
+        document.getElementById('submitExplanationBtn').style.display = 'none';
+        document.getElementById('userExplanation').value = '';
+        const timerSeconds = q.type === 'self-eval' ? TIME_SELF_EVAL : TIME_TRUE_FALSE;
+        startTimer(timerSeconds);
+    }
 }
 
-// 回答を確定
+// 回答を確定（説明入力フェーズ以外のルート）
 function confirmAnswer() {
     if (selectedAnswer === null) {
         alert('回答を選択してください');
         return;
     }
-
-    // タイマー停止
     stopTimer();
+    _finalizeAnswer();
+}
 
+// 回答確定の共通処理
+function _finalizeAnswer() {
     const q = currentQuestions[currentIndex];
     const btnCorrect = document.getElementById('btnCorrect');
     const btnWrong = document.getElementById('btnWrong');
     const feedback = document.getElementById('feedback');
 
-    // ボタンを無効化（変更不可）
+    // ボタンを無効化
     btnCorrect.disabled = true;
     btnWrong.disabled = true;
 
@@ -727,10 +750,7 @@ function confirmAnswer() {
     } else {
         isCorrect = (selectedAnswer === q.answer);
     }
-
-    if (isCorrect) {
-        score++;
-    }
+    if (isCorrect) score++;
 
     // 回答記録を保存
     answerRecords[currentIndex] = {
@@ -757,46 +777,27 @@ function confirmAnswer() {
         categoryScores[q.category] = { correct: 0, total: 0 };
     }
     categoryScores[q.category].total++;
-    if (isCorrect) {
-        categoryScores[q.category].correct++;
-    }
+    if (isCorrect) categoryScores[q.category].correct++;
 
-    // 確定ボタン非表示
     document.getElementById('confirmBtn').style.display = 'none';
 
-    // 問1〜8で「○ できる」を選んだ場合は、先に説明入力を求める（解説はまだ見せない）
-    if (currentIndex < 8 && selectedAnswer === true) {
-        // フィードバックは「○ できる」のみ表示、解説はまだ非表示
-        feedback.className = 'feedback correct';
-        document.getElementById('feedbackTitle').textContent = '○ できる';
-        document.getElementById('feedbackText').textContent = '下のテキストエリアに説明を入力してください（60秒以内）';
-
-        document.getElementById('explanationInput').style.display = 'block';
-        document.getElementById('explanationLabel').textContent =
-            '実際に自分の言葉で説明してください：';
-        document.getElementById('submitExplanationBtn').style.display = 'block';
-        document.getElementById('nextBtn').style.display = 'none';
-
-        // 説明入力用タイマー開始
-        startExplanationTimer();
+    // フィードバック表示
+    if (q.type === 'self-eval') {
+        feedback.className = 'feedback ' + (selectedAnswer ? 'correct' : 'wrong');
+        document.getElementById('feedbackTitle').textContent =
+            selectedAnswer ? '○ できる' : '× できない';
     } else {
-        // 通常通り解説を表示
-        if (q.type === 'self-eval') {
-            feedback.className = 'feedback ' + (selectedAnswer ? 'correct' : 'wrong');
-            document.getElementById('feedbackTitle').textContent =
-                selectedAnswer ? '○ できる' : '× できない';
-        } else {
-            feedback.className = 'feedback ' + (isCorrect ? 'correct' : 'wrong');
-            document.getElementById('feedbackTitle').textContent =
-                isCorrect ? '正解！' : '不正解（正解は ' + (q.answer ? '○' : '×') + '）';
-        }
-        document.getElementById('feedbackText').textContent = q.explanation;
-
-        // 次へボタン表示
-        document.getElementById('nextBtn').style.display = 'block';
-        document.getElementById('nextBtn').textContent =
-            currentIndex === currentQuestions.length - 1 ? '結果を見る' : '次の問題へ';
+        feedback.className = 'feedback ' + (isCorrect ? 'correct' : 'wrong');
+        document.getElementById('feedbackTitle').textContent =
+            isCorrect ? '正解！' : '不正解（正解は ' + (q.answer ? '○' : '×') + '）';
     }
+    document.getElementById('feedbackText').textContent = q.explanation;
+    feedback.style.display = 'block';
+
+    // 次へボタン表示
+    document.getElementById('nextBtn').style.display = 'block';
+    document.getElementById('nextBtn').textContent =
+        currentIndex === currentQuestions.length - 1 ? '結果を見る' : '次の問題へ';
 }
 
 // 説明を送信
@@ -823,28 +824,10 @@ function submitExplanation(isTimeUp = false) {
     document.getElementById('explanationInput').style.display = 'none';
     document.getElementById('submitExplanationBtn').style.display = 'none';
 
-    // ユーザーの説明を表示
-    document.getElementById('userExplanationDisplay').style.display = 'block';
-    if (userExplanation) {
-        document.getElementById('userExplanationText').textContent = userExplanation;
-    } else {
-        document.getElementById('userExplanationText').textContent = '（時間切れ：未入力）';
-    }
-
-    // 解説を表示（ここで初めて見せる）
-    const feedback = document.getElementById('feedback');
-    feedback.className = 'feedback correct';
-    if (isTimeUp && !userExplanation) {
-        document.getElementById('feedbackTitle').textContent = '⏱️ 時間切れ！ 回答例：';
-    } else {
-        document.getElementById('feedbackTitle').textContent = '回答例：';
-    }
-    document.getElementById('feedbackText').textContent = q.explanation;
-
-    // 次へボタン表示
-    document.getElementById('nextBtn').style.display = 'block';
-    document.getElementById('nextBtn').textContent =
-        currentIndex === currentQuestions.length - 1 ? '結果を見る' : '次の問題へ';
+    // 回答を確定してスコアを記録してから次の問題へ
+    _finalizeAnswer();
+    document.getElementById('nextBtn').style.display = 'none';
+    nextQuestion();
 }
 
 // 次の問題へ進む
@@ -1079,7 +1062,5 @@ function restart() {
     stopTimer();
     tabLeaveCount = 0;
     document.getElementById('tabWarning').style.display = 'none';
-    document.getElementById('startScreen').style.display = 'block';
-    document.getElementById('quizScreen').style.display = 'none';
-    document.getElementById('resultScreen').style.display = 'none';
+    startQuiz('all');
 }

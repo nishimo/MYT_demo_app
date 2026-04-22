@@ -4,6 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>シーシャ×経営 ポテンシャル可視化クイズ</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@400;500;600;700&family=Zen+Kaku+Gothic+New:wght@400;500;700&family=JetBrains+Mono:wght@400;500&family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -41,60 +44,65 @@
 
         <!-- クイズ画面 -->
         <div class="quiz-screen" id="quizScreen">
-            <!-- スクリーンショット禁止警告バナー -->
-            <div class="screenshot-warning-banner">
-                <span class="icon">📵</span>
-                スクリーンショット・画面録画・AIカンニング禁止
-            </div>
-
-            <div class="progress-bar">
-                <div class="progress-fill" id="progressFill"></div>
-            </div>
-
-            <div class="question-info">
-                <span id="questionNumber">問1 / 30</span>
-                <span class="category-badge" id="categoryBadge">カテゴリ</span>
-            </div>
-
-            <div class="timer-container">
-                <span class="timer" id="timerDisplay">20</span>
-                <span style="color: #95a5a6; font-size: 0.9rem;">秒</span>
-            </div>
-            <div class="timer-bar">
-                <div class="timer-bar-fill" id="timerBarFill"></div>
-            </div>
-
-            <div id="selfEvalNote" class="self-eval-note" style="display: none;">
-                自己評価形式：できる/説明できる → ○、できない → ×
-            </div>
-
-            <div class="question-card">
-                <p class="question-text" id="questionText">問題文がここに表示されます</p>
-
-                <div class="answer-buttons">
-                    <button class="answer-btn correct-btn" id="btnCorrect" onclick="answer(true)">○</button>
-                    <button class="answer-btn wrong-btn" id="btnWrong" onclick="answer(false)">×</button>
+            <!-- 上部固定：進捗・問題番号・タイマー -->
+            <div class="quiz-top">
+                <div class="screenshot-warning-banner">
+                    <span class="icon">📵</span>
+                    スクリーンショット・画面録画・AIカンニング禁止
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressFill"></div>
+                </div>
+                <div class="question-info">
+                    <span id="questionNumber">問1 / 30</span>
+                    <span class="category-badge" id="categoryBadge">カテゴリ</span>
+                </div>
+                <div class="timer-container">
+                    <span class="timer" id="timerDisplay">20</span>
+                    <span style="font-size: 0.85rem; color: var(--ink-mute);">秒</span>
+                </div>
+                <div class="timer-bar">
+                    <div class="timer-bar-fill" id="timerBarFill"></div>
+                </div>
+                <div id="selfEvalNote" class="self-eval-note" style="display: none;">
+                    自己評価形式：できる/説明できる → ○、できない → ×
                 </div>
             </div>
 
-            <div class="feedback" id="feedback">
-                <h4 id="feedbackTitle">正解！</h4>
-                <p id="feedbackText">解説がここに表示されます</p>
+            <!-- 中部伸縮：問題カード・フィードバック -->
+            <div class="quiz-middle">
+                <div class="question-card">
+                    <p class="question-text" id="questionText">問題文がここに表示されます</p>
+                    <div class="answer-buttons">
+                        <button class="answer-btn correct-btn" id="btnCorrect" onclick="answer(true)">○</button>
+                        <button class="answer-btn wrong-btn" id="btnWrong" onclick="answer(false)">×</button>
+                    </div>
+                </div>
+
+                <div class="feedback" id="feedback">
+                    <h4 id="feedbackTitle">正解！</h4>
+                    <p id="feedbackText">解説がここに表示されます</p>
+                </div>
+
+                <div class="explanation-input" id="explanationInput" style="display: none;">
+                    <div class="explanation-heading">EXPLANATION</div>
+                    <label for="userExplanation" id="explanationLabel">自分の言葉で説明してください</label>
+                    <p class="explanation-hint">選択を変えたい場合は、上の ○ / × ボタンを押してください</p>
+                    <textarea id="userExplanation" rows="3" placeholder="ここに入力..."></textarea>
+                </div>
+
+                <div class="user-explanation-display" id="userExplanationDisplay" style="display: none;">
+                    <h5>あなたの説明：</h5>
+                    <p id="userExplanationText"></p>
+                </div>
             </div>
 
-            <div class="explanation-input" id="explanationInput" style="display: none;">
-                <label for="userExplanation" id="explanationLabel">あなたの説明を入力してください：</label>
-                <textarea id="userExplanation" rows="4" placeholder="自分の言葉で説明してください..."></textarea>
+            <!-- 下部固定：ボタン -->
+            <div class="quiz-bottom">
+                <button class="next-btn" id="confirmBtn" onclick="confirmAnswer()">回答を確定</button>
+                <button class="next-btn" id="submitExplanationBtn" onclick="submitExplanation()" style="display: none;">説明を送信して次へ</button>
+                <button class="next-btn" id="nextBtn" onclick="nextQuestion()">次の問題へ</button>
             </div>
-
-            <div class="user-explanation-display" id="userExplanationDisplay" style="display: none;">
-                <h5>あなたの説明：</h5>
-                <p id="userExplanationText"></p>
-            </div>
-
-            <button class="next-btn" id="confirmBtn" onclick="confirmAnswer()">回答を確定</button>
-            <button class="next-btn" id="submitExplanationBtn" onclick="submitExplanation()" style="display: none;">説明を送信して次へ</button>
-            <button class="next-btn" id="nextBtn" onclick="nextQuestion()">次の問題へ</button>
         </div>
 
         <!-- 結果画面 -->
@@ -143,5 +151,6 @@
     </div>
 
     <script src="app.js"></script>
+    <script>startQuiz('all');</script>
 </body>
 </html>
