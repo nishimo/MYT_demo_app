@@ -649,7 +649,7 @@
   @media (max-width: 860px) { .quiz-grid { grid-template-columns: 1fr; gap: 40px; } }
   .quiz-text h3 { font-family: "Shippori Mincho", serif; font-size: clamp(28px, 3.8vw, 44px); font-weight: 600; line-height: 1.45; margin-bottom: 24px; }
   .quiz-text h3 .hl { color: var(--accent); }
-  .quiz-text p { font-family: "Shippori Mincho", serif; color: color-mix(in oklab, var(--paper) 75%, transparent); margin-bottom: 32px; line-height: 2.1; font-size: 16px; }
+  .quiz-text p { font-family: "Shippori Mincho", serif; color: color-mix(in oklab, var(--paper) 75%, transparent); margin-bottom: 0; line-height: 2.1; font-size: 16px; }
   .quiz-mock { background: color-mix(in oklab, var(--paper) 4%, var(--ink)); border: 1px solid color-mix(in oklab, var(--paper) 20%, transparent); padding: 36px; }
   .quiz-mock .q-num { font-family: "JetBrains Mono", monospace; font-size: 11px; letter-spacing: 0.15em; color: var(--accent); margin-bottom: 12px; }
   .quiz-mock .q-text { font-family: "Shippori Mincho", serif; font-size: 18px; line-height: 1.8; margin-bottom: 28px; min-height: 90px; }
@@ -831,7 +831,7 @@
 
     /* QUIZ */
     .quiz-text h3 { font-size: 22px; line-height: 1.55; }
-    .quiz-text p { font-size: 14px; line-height: 2; margin-bottom: 24px; }
+    .quiz-text p { font-size: 14px; line-height: 2; margin-bottom: 0; }
     .quiz-mock { padding: 24px 20px; }
     .quiz-mock .q-num { font-size: 10px; }
     .quiz-mock .q-text { font-size: 15px; min-height: 70px; margin-bottom: 20px; }
@@ -896,7 +896,7 @@
       <a href="#report">レポート</a>
       <a href="#pricing">料金</a>
       <a href="#faq">Q&amp;A</a>
-      <a href="#apply" class="mast-cta">申込む</a>
+      <a href="https://docs.google.com/forms/d/e/1FAIpQLSeHBTQYRrbQVNDJI-XPkaqMKRb7DFE4pk4GUiWWMzJ4PFF5XA/viewform?usp=header" class="mast-cta" target="_blank" rel="noopener noreferrer">申込む</a>
     </div>
   </div>
 </header>
@@ -1221,7 +1221,6 @@
       <div class="quiz-text">
         <h3>本診断の<span class="hl">前に</span>。<br>無料で、現在地を知る。</h3>
         <p>ポテンシャル可視化クイズは統合診断の縮小版。55問の一部を○×形式で答えるだけで、技術と経営のざっくりとしたバランスが見えてきます。本診断に進む前の最初の一歩としてどうぞ。</p>
-        <a href="index.html" class="btn-primary" style="background: var(--accent); border-color: var(--accent); color: var(--paper);"><span>無料クイズを始める</span><span class="arrow">→</span></a>
       </div>
       <div class="quiz-mock">
         <div class="q-num">Q. 03 / 55 — カテゴリ：熱管理</div>
@@ -1317,7 +1316,7 @@
     <div class="form-card apply-card">
       <p class="apply-lede">申込フォームはGoogleフォームでご用意しています。下のボタンから必要事項をご記入のうえ送信ください。原則24時間以内に審査結果をお返しします。</p>
       <!-- TODO: Google フォームの公開URLに差し替え -->
-      <a href="#" class="apply-cta" target="_blank" rel="noopener noreferrer"><span>Googleフォームで申し込む</span><span class="arrow">→</span></a>
+      <a href="https://docs.google.com/forms/d/e/1FAIpQLSeHBTQYRrbQVNDJI-XPkaqMKRb7DFE4pk4GUiWWMzJ4PFF5XA/viewform?usp=header" class="apply-cta" target="_blank" rel="noopener noreferrer"><span>Googleフォームで申し込む</span><span class="arrow">→</span></a>
       <div class="form-note">※ 別タブでGoogleフォームが開きます</div>
     </div>
   </div>

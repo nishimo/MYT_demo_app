@@ -32,10 +32,13 @@
 
         <!-- スタート画面 -->
         <div class="start-screen" id="startScreen">
-            <p>診断したいカテゴリを選んでください</p>
+            <div class="name-input-group">
+                <label for="clientName">お名前</label>
+                <input type="text" id="clientName" placeholder="例：山田 太郎" autocomplete="name">
+            </div>
 
             <div class="quiz-type-selector">
-                <button class="quiz-type-btn" onclick="startQuiz('all')">
+                <button class="quiz-type-btn" onclick="startQuizWithValidation('all')">
                     <h3>総合ポテンシャル診断 <span class="badge">55問</span></h3>
                     <p>シーシャ技術（30問）＋ 経営知識（25問）</p>
                 </button>
@@ -105,6 +108,16 @@
             </div>
         </div>
 
+        <!-- セクションコメント画面 -->
+        <div class="comment-screen" id="commentScreen" style="display: none;">
+            <div class="comment-section-label" id="commentSectionLabel"></div>
+            <p class="comment-prompt" id="commentPrompt"></p>
+            <textarea id="sectionComment" rows="5" placeholder="疑問点や感想があればご記入ください（任意）"></textarea>
+            <div class="comment-screen-buttons">
+                <button class="next-btn" onclick="submitSectionComment()">次へ進む</button>
+            </div>
+        </div>
+
         <!-- 結果画面 -->
         <div class="result-screen" id="resultScreen">
             <div class="print-header">シーシャ×経営 ポテンシャル可視化クイズ ─ 診断結果</div>
@@ -151,6 +164,5 @@
     </div>
 
     <script src="app.js"></script>
-    <script>startQuiz('all');</script>
 </body>
 </html>
