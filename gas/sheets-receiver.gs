@@ -237,38 +237,52 @@ function writeTitle(sheet, row, title) {
   sheet.getRange(row, 1, 1, 7).setBackground('#F2F2F2');
 }
 
-// ─── 管理画面API：全レコードをJSON配列で返す ────────────────────────
-// admin.html から fetch(GAS_ENDPOINT) で呼び出す。新しい順に並べて返す。
-function doGet() {
+// ─── 管理画面API：全レコード取得 / 個別削除 ─────────────────────────
+// GET ?action=delete&exportedAt=<値> → 該当レコードを削除
+// GET（パラメータなし）→ 全レコードをJSON配列で返す
+function doGet(e) {
   try {
+    const params = (e && e.parameter) || {};
+
+    if (params.action === 'delete') {
+      const exportedAt = params.exportedAt || '';
+      if (!exportedAt) return jsonRes({status: 'error', message: 'exportedAt required'});
+      const ss    = getSpreadsheet();
+      const sheet = ss.getSheetByName(RECORDS_SHEET);
+      if (!sheet || sheet.getLastRow() <= 1) return jsonRes({status: 'error', message: 'not found'});
+      const col1 = sheet.getRange(2, 1, sheet.getLastRow() - 1, 1).getValues();
+      for (var i = 0; i < col1.length; i++) {
+        if (String(col1[i][0]).trim() === exportedAt) {
+          sheet.deleteRow(i + 2);
+          return jsonRes({status: 'ok'});
+        }
+      }
+      return jsonRes({status: 'error', message: 'not found'});
+    }
+
     const ss    = getSpreadsheet();
     const sheet = ss.getSheetByName(RECORDS_SHEET);
-
     const records = [];
     if (sheet && sheet.getLastRow() > 1) {
       const values = sheet.getRange(2, 2, sheet.getLastRow() - 1, 1).getValues();
       values.forEach(function(row) {
         const json = row[0];
         if (!json) return;
-        try {
-          records.push(JSON.parse(json));
-        } catch (e) {
-          // 壊れた行はスキップ
-        }
+        try { records.push(JSON.parse(json)); } catch (e) {}
       });
     }
-    // 新しい順（admin.htmlの一覧は先頭が最新）
     records.reverse();
-
-    return ContentService
-      .createTextOutput(JSON.stringify({ status: 'ok', records: records }))
-      .setMimeType(ContentService.MimeType.JSON);
+    return jsonRes({status: 'ok', records: records});
 
   } catch (err) {
-    return ContentService
-      .createTextOutput(JSON.stringify({ status: 'error', message: err.message }))
-      .setMimeType(ContentService.MimeType.JSON);
+    return jsonRes({status: 'error', message: err.message});
   }
+}
+
+function jsonRes(obj) {
+  return ContentService
+    .createTextOutput(JSON.stringify(obj))
+    .setMimeType(ContentService.MimeType.JSON);
 }
 
 // ─── 過去データ移行（手動実行・1回のみ） ──────────────────────────────

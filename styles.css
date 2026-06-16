@@ -1123,6 +1123,23 @@ body {
   font-family: "JetBrains Mono", monospace;
 }
 
+.delete-btn {
+  background: transparent;
+  border: 1px solid var(--rule);
+  color: var(--ink-mute);
+  font-size: 13px;
+  width: 26px;
+  height: 26px;
+  cursor: pointer;
+  line-height: 1;
+  padding: 0;
+  transition: border-color 0.15s, color 0.15s;
+}
+.delete-btn:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
 .admin-empty {
   text-align: center;
   padding: 64px 0;

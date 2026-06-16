@@ -146,7 +146,7 @@ function renderList() {
     }
 
     let html = '<table class="client-table"><thead><tr>';
-    html += '<th>No</th><th>名前</th><th>日時</th><th>総合</th><th>技術</th><th>経営</th>';
+    html += '<th>No</th><th>名前</th><th>日時</th><th>総合</th><th>技術</th><th>経営</th><th></th>';
     html += '</tr></thead><tbody>';
 
     records.forEach(function(r, i) {
@@ -168,6 +168,7 @@ function renderList() {
         html += '<td><span class="grade-badge ' + gradeClass + '">' + esc(meta.totalGrade || '-') + '</span></td>';
         html += '<td><span class="grade-badge ' + getGradeClass(meta.shishaGrade) + '">' + esc(meta.shishaGrade || '-') + '</span></td>';
         html += '<td><span class="grade-badge ' + getGradeClass(meta.businessGrade) + '">' + esc(meta.businessGrade || '-') + '</span></td>';
+        html += '<td><button class="delete-btn" onclick="event.stopPropagation();confirmDelete(' + i + ')" title="削除">×</button></td>';
         html += '</tr>';
     });
 
@@ -295,6 +296,27 @@ function renderAnswers(answers) {
         html += '</div></details>';
     });
     document.getElementById('detailAnswers').innerHTML = html;
+}
+
+// ─── 個別削除 ─────────────────────────────────────────────────
+async function confirmDelete(index) {
+    const r = records[index];
+    if (!r) return;
+    const meta = r.meta || {};
+    const name = meta.clientName || '（未入力）';
+    const date = formatDate(meta.exportedAt);
+    if (!confirm(name + '（' + date + '）の回答を削除しますか？')) return;
+
+    try {
+        const url = GAS_ENDPOINT + '?action=delete&exportedAt=' + encodeURIComponent(meta.exportedAt);
+        const res = await fetch(url);
+        const data = await res.json();
+        if (data.status !== 'ok') throw new Error(data.message || 'delete failed');
+        await fetchRecords();
+        renderList();
+    } catch (e) {
+        alert('削除に失敗しました: ' + e.message);
+    }
 }
 
 // ─── XSSエスケープ ────────────────────────────────────────────
