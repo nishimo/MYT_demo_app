@@ -68,6 +68,36 @@ body {
   text-align: center;
 }
 
+.name-input-group {
+  margin-bottom: 32px;
+}
+
+.name-input-group label {
+  display: block;
+  font-family: "Shippori Mincho", serif;
+  font-size: 14px;
+  letter-spacing: 0.08em;
+  color: var(--ink-soft);
+  margin-bottom: 10px;
+}
+
+.name-input-group input {
+  width: 100%;
+  border: 1px solid var(--ink);
+  border-radius: 0;
+  padding: 14px 16px;
+  font-family: "Zen Kaku Gothic New", sans-serif;
+  font-size: 16px;
+  color: var(--ink);
+  background: var(--paper);
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.name-input-group input:focus {
+  border-color: var(--accent);
+}
+
 .quiz-type-selector {
   display: flex;
   flex-direction: column;
@@ -496,6 +526,57 @@ body {
 }
 
 /* 結果画面 */
+.comment-screen {
+  display: none;
+  padding: 40px 0 48px;
+}
+
+.comment-section-label {
+  font-family: "Shippori Mincho", serif;
+  font-size: 0.85rem;
+  letter-spacing: 0.08em;
+  color: var(--ink-mute);
+  text-transform: uppercase;
+  margin-bottom: 16px;
+}
+
+.comment-prompt {
+  font-size: 1rem;
+  line-height: 1.8;
+  color: var(--ink);
+  margin-bottom: 24px;
+  border-left: 3px solid var(--accent);
+  padding-left: 16px;
+}
+
+.comment-screen textarea {
+  width: 100%;
+  border: 1px solid var(--rule);
+  border-radius: 4px;
+  padding: 14px 16px;
+  font-family: "Zen Kaku Gothic New", sans-serif;
+  font-size: 0.95rem;
+  line-height: 1.8;
+  color: var(--ink);
+  background: var(--paper-2);
+  resize: vertical;
+  outline: none;
+  margin-bottom: 24px;
+}
+
+.comment-screen textarea:focus {
+  border-color: var(--accent);
+  background: var(--paper);
+}
+
+.comment-screen-buttons {
+  text-align: center;
+}
+
+.comment-screen-buttons .next-btn {
+  display: block;
+}
+
 .result-screen {
   display: none;
   text-align: center;
@@ -901,4 +982,453 @@ body {
     font-weight: 600;
     color: var(--ink);
   }
+}
+
+/* ── ADMIN ─────────────────────────────────────────────────── */
+
+.admin-wrap {
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 0 32px 64px;
+}
+
+.admin-header {
+  text-align: center;
+  padding: 48px 0 36px;
+  border-bottom: 1px solid var(--rule);
+  margin-bottom: 40px;
+}
+
+.admin-header h1 {
+  font-family: "Shippori Mincho", serif;
+  font-size: clamp(18px, 3vw, 24px);
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  margin-bottom: 8px;
+}
+
+.admin-header p {
+  font-size: 13px;
+  color: var(--ink-mute);
+  font-family: "JetBrains Mono", monospace;
+  letter-spacing: 0.08em;
+}
+
+/* 一覧 */
+.admin-list-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.admin-list-head h2 {
+  font-family: "Shippori Mincho", serif;
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+}
+
+.admin-count {
+  font-size: 13px;
+  color: var(--ink-mute);
+  font-family: "JetBrains Mono", monospace;
+}
+
+.admin-btn-danger {
+  background: transparent;
+  border: 1px solid var(--accent);
+  color: var(--accent);
+  font-family: "Zen Kaku Gothic New", sans-serif;
+  font-size: 12px;
+  padding: 6px 14px;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+}
+
+.admin-btn-danger:hover {
+  background: var(--accent);
+  color: var(--paper);
+}
+
+.client-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+
+.client-table th {
+  text-align: left;
+  padding: 10px 12px;
+  background: var(--ink);
+  color: var(--paper);
+  font-family: "Shippori Mincho", serif;
+  font-weight: 600;
+  font-size: 12px;
+  letter-spacing: 0.05em;
+}
+
+.client-row {
+  border-bottom: 1px solid var(--rule);
+  cursor: pointer;
+  transition: background 0.15s;
+  border-left: 4px solid transparent;
+}
+
+.client-row:hover {
+  background: var(--paper-2);
+}
+
+.client-row td {
+  padding: 14px 12px;
+  vertical-align: middle;
+}
+
+.client-row .client-name {
+  font-family: "Shippori Mincho", serif;
+  font-weight: 600;
+  font-size: 15px;
+}
+
+.client-row .client-date {
+  font-size: 12px;
+  color: var(--ink-mute);
+  font-family: "JetBrains Mono", monospace;
+  margin-top: 2px;
+}
+
+.grade-badge {
+  display: inline-block;
+  font-family: "Shippori Mincho", serif;
+  font-weight: 700;
+  font-size: 15px;
+  width: 28px;
+  text-align: center;
+}
+
+.grade-badge.grade-a { color: var(--correct); }
+.grade-badge.grade-b { color: var(--ink); }
+.grade-badge.grade-c { color: var(--warning); }
+.grade-badge.grade-d { color: var(--accent); }
+
+.client-row.grade-a { border-left-color: var(--correct); }
+.client-row.grade-b { border-left-color: var(--ink-mute); }
+.client-row.grade-c { border-left-color: var(--warning); }
+.client-row.grade-d { border-left-color: var(--accent); }
+
+.tab-warn-badge {
+  font-size: 11px;
+  color: var(--warning);
+  margin-left: 6px;
+  font-family: "JetBrains Mono", monospace;
+}
+
+.admin-empty {
+  text-align: center;
+  padding: 64px 0;
+  color: var(--ink-mute);
+  font-family: "Shippori Mincho", serif;
+  font-size: 15px;
+  line-height: 2;
+}
+
+/* 詳細 */
+.admin-btn-back {
+  background: transparent;
+  border: none;
+  color: var(--ink-mute);
+  font-family: "Zen Kaku Gothic New", sans-serif;
+  font-size: 14px;
+  cursor: pointer;
+  padding: 0;
+  margin-bottom: 32px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: color 0.2s;
+}
+
+.admin-btn-back:hover { color: var(--ink); }
+
+.detail-summary-card {
+  border: 1px solid var(--rule);
+  padding: 28px 32px;
+  margin-bottom: 32px;
+}
+
+.detail-client-name {
+  font-family: "Shippori Mincho", serif;
+  font-size: clamp(20px, 3vw, 26px);
+  font-weight: 600;
+  margin-bottom: 6px;
+}
+
+.detail-meta {
+  font-size: 12px;
+  color: var(--ink-mute);
+  font-family: "JetBrains Mono", monospace;
+  letter-spacing: 0.05em;
+  margin-bottom: 24px;
+}
+
+.score-badges {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+
+.score-badge-item {
+  border: 1px solid var(--rule);
+  padding: 16px;
+  text-align: center;
+}
+
+.score-badge-item .label {
+  font-size: 11px;
+  color: var(--ink-mute);
+  letter-spacing: 0.08em;
+  font-family: "JetBrains Mono", monospace;
+  margin-bottom: 8px;
+}
+
+.score-badge-item .value {
+  font-family: "Shippori Mincho", serif;
+  font-size: 20px;
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+
+.score-badge-item .percent {
+  font-size: 13px;
+  color: var(--ink-soft);
+  margin-bottom: 6px;
+}
+
+.admin-section {
+  margin-bottom: 36px;
+}
+
+.admin-section-title {
+  font-family: "Shippori Mincho", serif;
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  color: var(--ink-soft);
+  border-bottom: 1px solid var(--rule);
+  padding-bottom: 8px;
+  margin-bottom: 16px;
+}
+
+/* カテゴリ別 */
+.category-bar-item {
+  display: grid;
+  grid-template-columns: 180px 1fr 60px;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 10px;
+  font-size: 13px;
+}
+
+.category-bar-item .cat-name {
+  font-family: "Shippori Mincho", serif;
+  color: var(--ink-soft);
+  font-size: 12px;
+}
+
+.category-bar-track {
+  height: 8px;
+  background: var(--paper-2);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.category-bar-fill {
+  height: 100%;
+  background: var(--ink);
+  border-radius: 2px;
+  transition: width 0.4s ease;
+}
+
+.category-bar-fill.weak { background: var(--warning); }
+
+.cat-percent {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 12px;
+  text-align: right;
+}
+
+.cat-percent.weak { color: var(--warning); font-weight: 700; }
+
+.category-group-label {
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  color: var(--ink-mute);
+  font-family: "JetBrains Mono", monospace;
+  margin: 16px 0 8px;
+}
+
+/* セクションコメント */
+.section-comment-block {
+  display: grid;
+  grid-template-columns: 120px 1fr;
+  gap: 0;
+  border: 1px solid var(--rule);
+}
+
+.section-comment-block .comment-label {
+  padding: 12px 16px;
+  font-size: 12px;
+  font-family: "JetBrains Mono", monospace;
+  color: var(--ink-mute);
+  background: var(--paper-2);
+  border-bottom: 1px solid var(--rule);
+}
+
+.section-comment-block .comment-text {
+  padding: 12px 16px;
+  font-size: 14px;
+  line-height: 1.7;
+  border-bottom: 1px solid var(--rule);
+}
+
+.section-comment-block .comment-label:last-of-type,
+.section-comment-block .comment-text:last-child {
+  border-bottom: none;
+}
+
+.comment-empty { color: var(--ink-mute); font-style: italic; }
+
+/* 自由記述 */
+.free-text-block {
+  border: 1px solid var(--rule);
+  margin-bottom: 12px;
+}
+
+.free-text-block .q-label {
+  padding: 10px 16px;
+  font-size: 12px;
+  font-family: "JetBrains Mono", monospace;
+  color: var(--ink-mute);
+  background: var(--paper-2);
+  border-bottom: 1px solid var(--rule);
+}
+
+.free-text-block .q-text {
+  padding: 10px 16px;
+  font-size: 13px;
+  color: var(--ink-soft);
+  border-bottom: 1px solid var(--rule);
+}
+
+.free-text-block .free-content {
+  padding: 12px 16px;
+  font-size: 14px;
+  line-height: 1.8;
+}
+
+/* 55問一覧 */
+.answer-list {
+  border: 1px solid var(--rule);
+  border-bottom: none;
+}
+
+.answer-item {
+  border-bottom: 1px solid var(--rule);
+}
+
+.answer-item summary {
+  display: grid;
+  grid-template-columns: 40px 150px 36px 36px 1fr;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 14px;
+  cursor: pointer;
+  font-size: 13px;
+  list-style: none;
+}
+
+.answer-item summary::-webkit-details-marker { display: none; }
+
+.answer-item.ans-correct { background: #F0FBF5; }
+.answer-item.ans-wrong   { background: #FDF3F3; }
+.answer-item.ans-timeout { background: #FEF9F0; }
+
+.answer-item .ans-no {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 11px;
+  color: var(--ink-mute);
+}
+
+.answer-item .ans-cat {
+  font-size: 11px;
+  color: var(--ink-mute);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.answer-item .ans-answer {
+  font-family: "Shippori Mincho", serif;
+  font-size: 16px;
+  text-align: center;
+}
+
+.answer-item .ans-correct-mark {
+  font-size: 14px;
+  text-align: center;
+}
+
+.answer-item .ans-question {
+  font-size: 13px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.answer-detail {
+  padding: 12px 16px 16px 58px;
+  border-top: 1px solid var(--rule);
+  background: rgba(255,255,255,0.6);
+}
+
+.answer-detail .model-answer {
+  font-size: 13px;
+  color: var(--ink-soft);
+  line-height: 1.8;
+  margin-bottom: 8px;
+}
+
+.has-free-badge {
+  font-size: 11px;
+  margin-left: 4px;
+  opacity: 0.7;
+}
+
+.answer-detail .user-explanation {
+  font-size: 13px;
+  color: var(--ink);
+  background: var(--paper-2);
+  padding: 10px 14px;
+  line-height: 1.8;
+  border-left: 3px solid var(--accent);
+  margin-top: 8px;
+}
+
+.free-label {
+  display: inline-block;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  color: var(--accent);
+  margin-right: 8px;
+  vertical-align: middle;
+}
+
+@media (max-width: 680px) {
+  .admin-wrap { padding: 0 16px 48px; }
+  .score-badges { grid-template-columns: 1fr; gap: 10px; }
+  .category-bar-item { grid-template-columns: 130px 1fr 50px; }
+  .section-comment-block { grid-template-columns: 1fr; }
+  .section-comment-block .comment-label { border-bottom: none; }
+  .answer-item summary { grid-template-columns: 32px 100px 30px 30px 1fr; gap: 4px; padding: 8px 10px; }
 }
