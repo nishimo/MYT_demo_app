@@ -1,6 +1,6 @@
 // Google Sheets連携用エンドポイント（GASデプロイURL）
 // 設定方法: gas/sheets-receiver.gs をデプロイ後、URLをここに貼り付ける
-const GAS_ENDPOINT = 'https://script.google.com/macros/s/AKfycbyqBq7eYVt18QJiwJITaefPZY4WZ5JqVo-C6enqDAx3R9T2xAfGOkRQ8aIhqJ1kQtsAng/exec';
+const GAS_ENDPOINT = 'https://script.google.com/macros/s/AKfycbxHiEX8rpU5O4uurFxBKFlBYeQaKPisR1Ks6rm4LIGUzNfeIfiSCv_T_fo0K4pIc47ypw/exec';
 
 // シーシャ技術診断（30問）
 const shishaQuestions = [
@@ -362,6 +362,16 @@ let businessScore = { correct: 0, total: 0 };
 let selectedAnswer = null; // 現在選択中の回答
 let userExplanations = []; // ユーザーの説明を保存
 let answerRecords = []; // 各問の回答記録
+let clientName = ''; // 受診者名
+let sectionComments = {}; // セクションコメント（キー: 問題番号）
+
+// セクションコメントを挟む問題インデックス（0始まり）と設定
+const SECTION_COMMENT_AFTER = {
+    14: { label: '第２セクション（問９〜１５）', prompt: '９〜１５の設問に関して、疑問点等があればご記入ください。（ご記入があればレポートのフォードバックをより詳しく行うことができます）' },
+    20: { label: '第３セクション（問１６〜２１）', prompt: '１６〜２１の設問に関して、疑問点等があればご記入ください。（ご記入があればレポートのフォードバックをより詳しく行うことができます）' },
+    25: { label: '第４セクション（問２２〜２６）', prompt: '２２〜２６の設問に関して、疑問点等があればご記入ください。（ご記入があればレポートのフォードバックをより詳しく行うことができます）' },
+    29: { label: '第５セクション（問２７〜３０）', prompt: '２７〜３０の設問に関して、疑問点等があればご記入ください。（ご記入があればレポートのフォードバックをより詳しく行うことができます）' }
+};
 
 // タイマー関連
 let timerInterval = null;
@@ -454,6 +464,20 @@ document.addEventListener('keydown', function(e) {
     }
 });
 
+// 名前バリデーション付き開始
+function startQuizWithValidation(type) {
+    const nameInput = document.getElementById('clientName');
+    const name = nameInput.value.trim();
+    if (!name) {
+        nameInput.focus();
+        nameInput.style.borderColor = 'var(--accent)';
+        nameInput.placeholder = '名前を入力してください';
+        return;
+    }
+    clientName = name;
+    startQuiz(type);
+}
+
 // クイズ開始
 function startQuiz(type) {
     quizType = type;
@@ -473,6 +497,8 @@ function startQuiz(type) {
     businessScore = { correct: 0, total: 0 };
     userExplanations = [];
     answerRecords = [];
+    sectionComments = {};
+    pendingCommentAfterIndex = null;
 
     document.getElementById('startScreen').style.display = 'none';
     document.getElementById('quizScreen').style.display = 'block';
@@ -814,33 +840,69 @@ function submitExplanation(isTimeUp = false) {
 
     const q = currentQuestions[currentIndex];
 
-    // ユーザーの説明を保存
     userExplanations[currentIndex] = userExplanation || '（未入力）';
-    if (answerRecords[currentIndex]) {
-        answerRecords[currentIndex].userExplanation = userExplanation || '（未入力）';
-    }
 
     // 入力フォームを非表示
     document.getElementById('explanationInput').style.display = 'none';
     document.getElementById('submitExplanationBtn').style.display = 'none';
 
-    // 回答を確定してスコアを記録してから次の問題へ
+    // 回答を確定（_finalizeAnswer()でanswerRecordsが生成される）
     _finalizeAnswer();
+
+    // 生成後にuserExplanationを付与
+    if (answerRecords[currentIndex]) {
+        answerRecords[currentIndex].userExplanation = userExplanation || '（未入力）';
+    }
+
     document.getElementById('nextBtn').style.display = 'none';
     nextQuestion();
 }
 
 // 次の問題へ進む
 function nextQuestion() {
-    // タイマー停止
     stopTimer();
-
-    // 選択をリセット
     selectedAnswer = null;
 
-    // 次へ進む
+    // セクションコメントを挟むか確認（シーシャ問題のみ対象：インデックス0〜29）
+    if (SECTION_COMMENT_AFTER[currentIndex] !== undefined) {
+        showSectionComment(currentIndex);
+        return;
+    }
+
     currentIndex++;
 
+    if (currentIndex >= currentQuestions.length) {
+        showResult();
+    } else {
+        showQuestion();
+    }
+}
+
+let pendingCommentAfterIndex = null; // コメント画面表示中の問題インデックス
+
+// セクションコメント画面を表示
+function showSectionComment(afterIndex) {
+    const config = SECTION_COMMENT_AFTER[afterIndex];
+    pendingCommentAfterIndex = afterIndex;
+    document.getElementById('quizScreen').style.display = 'none';
+    document.getElementById('commentScreen').style.display = 'block';
+    document.getElementById('commentSectionLabel').textContent = config.label;
+    document.getElementById('commentPrompt').textContent = config.prompt;
+    document.getElementById('sectionComment').value = '';
+}
+
+// セクションコメントを送信して次へ
+function submitSectionComment() {
+    const comment = document.getElementById('sectionComment').value.trim();
+    if (pendingCommentAfterIndex !== null) {
+        sectionComments[pendingCommentAfterIndex + 1] = comment;
+        pendingCommentAfterIndex = null;
+    }
+
+    document.getElementById('commentScreen').style.display = 'none';
+    document.getElementById('quizScreen').style.display = 'block';
+
+    currentIndex++;
     if (currentIndex >= currentQuestions.length) {
         showResult();
     } else {
@@ -953,17 +1015,30 @@ function showResult() {
 
 // Google Sheets送信
 function submitToSheets() {
-    if (!GAS_ENDPOINT) return;
+    if (GAS_ENDPOINT) {
+        const data = buildExportData();
+        fetch(GAS_ENDPOINT, {
+            method: 'POST',
+            mode: 'no-cors',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(data)
+        }).catch(function() {});
+    }
 
-    const data = buildExportData();
-    fetch(GAS_ENDPOINT, {
-        method: 'POST',
-        mode: 'no-cors',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(data)
-    }).catch(function() {
-        // 送信失敗は静かに無視（オフライン等）
-    });
+    saveToAdminStorage();
+}
+
+// 管理画面用にlocalStorageへ保存
+function saveToAdminStorage() {
+    try {
+        const data = buildExportData();
+        const existing = JSON.parse(localStorage.getItem('myt_admin_records') || '[]');
+        existing.unshift(data);
+        if (existing.length > 200) existing.splice(200);
+        localStorage.setItem('myt_admin_records', JSON.stringify(existing));
+    } catch (e) {
+        // 容量超過などは無視
+    }
 }
 
 // エクスポートデータを構築
@@ -976,6 +1051,7 @@ function buildExportData() {
 
     return {
         meta: {
+            clientName: clientName,
             exportedAt: timestamp,
             totalScore: score + '/' + currentQuestions.length,
             totalPercent: totalPercent + '%',
@@ -994,6 +1070,12 @@ function buildExportData() {
                 { correct: data.correct, total: data.total, percent: Math.round((data.correct / data.total) * 100) + '%' }
             ])
         ),
+        sectionComments: {
+            'Q9-15': sectionComments[15] || '',
+            'Q16-21': sectionComments[21] || '',
+            'Q22-26': sectionComments[26] || '',
+            'Q27-30': sectionComments[30] || ''
+        },
         answers: answerRecords.filter(Boolean)
     };
 }
@@ -1014,11 +1096,18 @@ function exportCSV() {
     ]);
 
     const summary = [
+        ['受診者名', data.meta.clientName],
         ['診断日時', data.meta.exportedAt],
         ['総合スコア', data.meta.totalScore + ' (' + data.meta.totalPercent + ') グレード: ' + data.meta.totalGrade],
         ['シーシャ技術', data.meta.shishaScore + ' (' + data.meta.shishaPercent + ') グレード: ' + data.meta.shishaGrade],
         ['経営知識', data.meta.businessScore + ' (' + data.meta.businessPercent + ') グレード: ' + data.meta.businessGrade],
         ['タブ離脱回数', data.meta.tabLeaveCount],
+        [],
+        ['【セクション別疑問点】'],
+        ['Q9-15の疑問点', '"' + (data.sectionComments['Q9-15'] || '').replace(/"/g, '""') + '"'],
+        ['Q16-21の疑問点', '"' + (data.sectionComments['Q16-21'] || '').replace(/"/g, '""') + '"'],
+        ['Q22-26の疑問点', '"' + (data.sectionComments['Q22-26'] || '').replace(/"/g, '""') + '"'],
+        ['Q27-30の疑問点', '"' + (data.sectionComments['Q27-30'] || '').replace(/"/g, '""') + '"'],
         [],
         headers
     ];
@@ -1061,6 +1150,8 @@ function formatDate(d) {
 function restart() {
     stopTimer();
     tabLeaveCount = 0;
+    pendingCommentAfterIndex = null;
     document.getElementById('tabWarning').style.display = 'none';
+    document.getElementById('commentScreen').style.display = 'none';
     startQuiz('all');
 }

@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MYT 管理画面</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@400;500;600;700&family=Zen+Kaku+Gothic+New:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="admin-wrap">
+
+    <div class="admin-header">
+        <h1>MYTコーチング 管理画面</h1>
+        <p>SHISHA × MANAGEMENT — DIAGNOSTIC RESULTS</p>
+    </div>
+
+    <!-- 画面A: クライアント一覧 -->
+    <div id="listView">
+        <div class="admin-list-head">
+            <h2>受診者一覧</h2>
+            <div style="display:flex; align-items:center; gap:16px;">
+                <span class="admin-count" id="clientCount">0 名</span>
+                <button class="admin-btn-back" onclick="refresh()">🔄 更新</button>
+            </div>
+        </div>
+
+        <div id="listContent"></div>
+    </div>
+
+    <!-- 画面B: 詳細 -->
+    <div id="detailView" style="display:none;">
+        <button class="admin-btn-back" onclick="showList()">← 一覧へ戻る</button>
+
+        <!-- ① スコアサマリー -->
+        <div class="detail-summary-card">
+            <div class="detail-client-name" id="detailName"></div>
+            <div class="detail-meta" id="detailMeta"></div>
+            <div class="score-badges" id="detailScores"></div>
+        </div>
+
+        <!-- ② カテゴリ別成績 -->
+        <div class="admin-section">
+            <div class="admin-section-title">カテゴリ別成績</div>
+            <div id="detailCategories"></div>
+        </div>
+
+        <!-- ③ セクションコメント -->
+        <div class="admin-section">
+            <div class="admin-section-title">セクション別 疑問点・コメント</div>
+            <div id="detailComments"></div>
+        </div>
+
+        <!-- ④ 55問一覧 -->
+        <div class="admin-section">
+            <div class="admin-section-title">全55問 回答詳細</div>
+            <div class="answer-list" id="detailAnswers"></div>
+        </div>
+    </div>
+
+</div>
+
+<script>
+const STORAGE_KEY = 'myt_admin_records';
+// app.js と同じGASエンドポイント（全受診者の回答が集約される共有バックエンド）
+const GAS_ENDPOINT = 'https://script.google.com/macros/s/AKfycbxHiEX8rpU5O4uurFxBKFlBYeQaKPisR1Ks6rm4LIGUzNfeIfiSCv_T_fo0K4pIc47ypw/exec';
+
+// 表示中のレコード（GASから取得。失敗時はlocalStorageキャッシュ）
+let records = loadCache();
+
+function loadCache() {
+    try {
+        return JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
+    } catch (e) {
+        return [];
+    }
+}
+
+function loadRecords() {
+    return records;
+}
+
+// GASから全受診者の回答を取得して表示を更新する
+async function fetchRecords() {
+    const res = await fetch(GAS_ENDPOINT, { method: 'GET' });
+    const data = await res.json();
+    if (data.status !== 'ok' || !Array.isArray(data.records)) {
+        throw new Error(data.message || 'invalid response');
+    }
+    records = data.records;
+    try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(records));
+    } catch (e) {
+        // 容量超過などは無視（キャッシュ更新失敗のみ）
+    }
+}
+
+async function refresh() {
+    const container = document.getElementById('listContent');
+    container.innerHTML = '<div class="admin-empty">読み込み中…</div>';
+    try {
+        await fetchRecords();
+    } catch (e) {
+        renderList();
+        if (records.length === 0) {
+            container.innerHTML = '<div class="admin-empty">サーバーからデータを取得できませんでした。<br>通信環境を確認して「🔄 更新」を押してください。</div>';
+        }
+        return;
+    }
+    renderList();
+}
+
+function formatDate(isoStr) {
+    const d = new Date(isoStr);
+    if (isNaN(d.getTime())) return isoStr;
+    const y = d.getFullYear();
+    const mo = d.getMonth() + 1;
+    const day = d.getDate();
+    const h = String(d.getHours()).padStart(2, '0');
+    const mi = String(d.getMinutes()).padStart(2, '0');
+    return `${y}年${mo}月${day}日 ${h}:${mi}`;
+}
+
+function getGradeClass(grade) {
+    return 'grade-' + (grade || 'd').toLowerCase();
+}
+
+// ─── 一覧画面 ─────────────────────────────────────────────────
+function showList() {
+    document.getElementById('listView').style.display = 'block';
+    document.getElementById('detailView').style.display = 'none';
+    renderList();
+}
+
+function renderList() {
+    const records = loadRecords();
+    document.getElementById('clientCount').textContent = records.length + ' 名';
+
+    const container = document.getElementById('listContent');
+
+    if (records.length === 0) {
+        container.innerHTML = '<div class="admin-empty">まだ受診データがありません。<br>クイズを完了すると、ここに結果が表示されます。</div>';
+        return;
+    }
+
+    let html = '<table class="client-table"><thead><tr>';
+    html += '<th>No</th><th>名前</th><th>日時</th><th>総合</th><th>技術</th><th>経営</th>';
+    html += '</tr></thead><tbody>';
+
+    records.forEach(function(r, i) {
+        const meta = r.meta || {};
+        const gradeClass = getGradeClass(meta.totalGrade);
+        const tabWarn = meta.tabLeaveCount > 0
+            ? '<span class="tab-warn-badge">⚠ ' + meta.tabLeaveCount + '回</span>' : '';
+
+        html += '<tr class="client-row ' + gradeClass + '" onclick="showDetail(' + i + ')">';
+        html += '<td><span class="ans-no">' + (i + 1) + '</span></td>';
+        html += '<td>'
+            + '<div class="client-name">' + esc(meta.clientName || '（未入力）') + tabWarn + '</div>'
+            + '<div class="client-date">' + formatDate(meta.exportedAt) + '</div>'
+            + '</td>';
+        html += '<td>'
+            + '<div style="font-family:\'Shippori Mincho\',serif;font-size:15px;font-weight:600;">' + esc(meta.totalScore || '') + '</div>'
+            + '<div style="font-family:\'JetBrains Mono\',monospace;font-size:11px;color:var(--ink-mute);">' + esc(meta.totalPercent || '') + '</div>'
+            + '</td>';
+        html += '<td><span class="grade-badge ' + gradeClass + '">' + esc(meta.totalGrade || '-') + '</span></td>';
+        html += '<td><span class="grade-badge ' + getGradeClass(meta.shishaGrade) + '">' + esc(meta.shishaGrade || '-') + '</span></td>';
+        html += '<td><span class="grade-badge ' + getGradeClass(meta.businessGrade) + '">' + esc(meta.businessGrade || '-') + '</span></td>';
+        html += '</tr>';
+    });
+
+    html += '</tbody></table>';
+    container.innerHTML = html;
+}
+
+// ─── 詳細画面 ─────────────────────────────────────────────────
+function showDetail(index) {
+    const records = loadRecords();
+    const r = records[index];
+    if (!r) return;
+
+    document.getElementById('listView').style.display = 'none';
+    document.getElementById('detailView').style.display = 'block';
+
+    const meta = r.meta || {};
+
+    // ① スコアサマリー
+    document.getElementById('detailName').textContent = meta.clientName || '（未入力）';
+
+    const tabText = meta.tabLeaveCount > 0 ? '　⚠ タブ離脱 ' + meta.tabLeaveCount + '回' : '';
+    document.getElementById('detailMeta').textContent =
+        formatDate(meta.exportedAt) + tabText;
+
+    document.getElementById('detailScores').innerHTML =
+        scoreBadge('総合', meta.totalScore, meta.totalPercent, meta.totalGrade) +
+        scoreBadge('シーシャ技術', meta.shishaScore, meta.shishaPercent, meta.shishaGrade) +
+        scoreBadge('経営知識', meta.businessScore, meta.businessPercent, meta.businessGrade);
+
+    // ② カテゴリ別
+    renderCategories(r.categories || {});
+
+    // ③ セクションコメント
+    renderComments(r.sectionComments || {});
+
+    // ④ 55問
+    renderAnswers(r.answers || []);
+
+    window.scrollTo(0, 0);
+}
+
+function scoreBadge(label, score, percent, grade) {
+    const gc = getGradeClass(grade);
+    return '<div class="score-badge-item">'
+        + '<div class="label">' + esc(label) + '</div>'
+        + '<div class="value">' + esc(score || '-') + '</div>'
+        + '<div class="percent">' + esc(percent || '-') + '</div>'
+        + '<div class="grade-badge ' + gc + '" style="font-size:20px;">' + esc(grade || '-') + '</div>'
+        + '</div>';
+}
+
+function renderCategories(categories) {
+    const shishaKeys = Object.keys(categories).filter(k => /^[ⅠⅡⅢⅣⅤ]/.test(k));
+    const bizKeys    = Object.keys(categories).filter(k => !/^[ⅠⅡⅢⅣⅤ]/.test(k));
+
+    let html = '';
+
+    if (shishaKeys.length) {
+        html += '<div class="category-group-label">SHISHA TECHNIQUE</div>';
+        shishaKeys.forEach(function(k) { html += categoryBarItem(k, categories[k]); });
+    }
+    if (bizKeys.length) {
+        html += '<div class="category-group-label">MANAGEMENT KNOWLEDGE</div>';
+        bizKeys.forEach(function(k) { html += categoryBarItem(k, categories[k]); });
+    }
+
+    document.getElementById('detailCategories').innerHTML = html;
+}
+
+function categoryBarItem(name, data) {
+    const pct = data.correct / data.total * 100;
+    const weak = pct < 70;
+    return '<div class="category-bar-item">'
+        + '<div class="cat-name">' + esc(name) + '</div>'
+        + '<div class="category-bar-track"><div class="category-bar-fill' + (weak ? ' weak' : '') + '" style="width:' + pct.toFixed(1) + '%"></div></div>'
+        + '<div class="cat-percent' + (weak ? ' weak' : '') + '">' + esc(data.percent || '') + '</div>'
+        + '</div>';
+}
+
+function renderComments(comments) {
+    const sections = [
+        { key: 'Q9-15',  label: '問９〜１５' },
+        { key: 'Q16-21', label: '問１６〜２１' },
+        { key: 'Q22-26', label: '問２２〜２６' },
+        { key: 'Q27-30', label: '問２７〜３０' },
+    ];
+
+    let html = '<div class="section-comment-block">';
+    sections.forEach(function(s) {
+        const text = comments[s.key];
+        const hasText = text && text.trim();
+        html += '<div class="comment-label">' + s.label + '</div>';
+        html += '<div class="comment-text">' + (hasText ? esc(text) : '<span class="comment-empty">記入なし</span>') + '</div>';
+    });
+    html += '</div>';
+
+    document.getElementById('detailComments').innerHTML = html;
+}
+
+function renderAnswers(answers) {
+    let html = '';
+    answers.forEach(function(a) {
+        const ansStr  = a.answer === true ? '○' : a.answer === false ? '×' : '時';
+        const corrStr = a.correct ? '✓' : '✗';
+        const cls     = a.answer === '時間切れ' ? 'ans-timeout' : a.correct ? 'ans-correct' : 'ans-wrong';
+        const hasFree = a.userExplanation && a.userExplanation !== '（未入力）';
+
+        html += '<details class="answer-item ' + cls + '">';
+        html += '<summary>'
+            + '<span class="ans-no">' + String(a.index).padStart(2, '0') + '</span>'
+            + '<span class="ans-cat">' + esc(a.category) + '</span>'
+            + '<span class="ans-answer">' + ansStr + '</span>'
+            + '<span class="ans-correct-mark">' + corrStr + '</span>'
+            + '<span class="ans-question">' + esc(a.question) + (hasFree ? ' <span class="has-free-badge">✏️</span>' : '') + '</span>'
+            + '</summary>';
+        html += '<div class="answer-detail">';
+        html += '<div class="model-answer">💡 ' + esc(a.modelAnswer || '') + '</div>';
+        if (hasFree) {
+            html += '<div class="user-explanation">'
+                + '<span class="free-label">自由記述</span>'
+                + esc(a.userExplanation)
+                + '</div>';
+        }
+        html += '</div></details>';
+    });
+    document.getElementById('detailAnswers').innerHTML = html;
+}
+
+// ─── XSSエスケープ ────────────────────────────────────────────
+function esc(str) {
+    return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+}
+
+// 初期化：まずキャッシュを即表示し、GASから最新を取得して更新
+renderList();
+refresh();
+</script>
+</body>
+</html>
